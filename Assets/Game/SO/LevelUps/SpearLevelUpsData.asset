@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea553872c56fc7746a39d51af37a5af9, type: 3}
+  m_Name: SpearLevelUpsData
+  m_EditorClassIdentifier: My::My.WeaponLevelUpsData
+  <Icon>k__BackingField: {fileID: -1420250052, guid: 62a8775e00da2ba4ea2f9fd0888a452f, type: 3}
+  <Name>k__BackingField: 4
+  _levelUps:
+  - <Type>k__BackingField: 2
+    <Price>k__BackingField: 1
+    <Stats>k__BackingField:
+      Damage: 1
+      RoundSpeed: 0
+      FlightSpeed: 2
+      LifeTime: 5
+      AttacksPerSecond: 2
+      CoolDown: 0
+      Count: 1
+      Strength: 2
+  - <Type>k__BackingField: 2
+    <Price>k__BackingField: 1
+    <Stats>k__BackingField:
+      Damage: 1
+      RoundSpeed: 0
+      FlightSpeed: 2
+      LifeTime: 5
+      AttacksPerSecond: 2
+      CoolDown: 0
+      Count: 2
+      Strength: 3
+  - <Type>k__BackingField: 2
+    <Price>k__BackingField: 1
+    <Stats>k__BackingField:
+      Damage: 1
+      RoundSpeed: 0
+      FlightSpeed: 2
+      LifeTime: 5
+      AttacksPerSecond: 2
+      CoolDown: 0
+      Count: 2
+      Strength: 4
+  - <Type>k__BackingField: 2
+    <Price>k__BackingField: 1
+    <Stats>k__BackingField:
+      Damage: 1
+      RoundSpeed: 0
+      FlightSpeed: 2
+      LifeTime: 5
+      AttacksPerSecond: 2
+      CoolDown: 0
+      Count: 4
+      Strength: 5
+  - <Type>k__BackingField: 2
+    <Price>k__BackingField: 1
+    <Stats>k__BackingField:
+      Damage: 1
+      RoundSpeed: 0
+      FlightSpeed: 2
+      LifeTime: 5
+      AttacksPerSecond: 2
+      CoolDown: 0
+      Count: 5
+      Strength: 6
+  <WeaponTemplate>k__BackingField: {fileID: 5241847542813628484, guid: c74ecce7804f7b848b5de7f597c94123, type: 3}

@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea553872c56fc7746a39d51af37a5af9, type: 3}
+  m_Name: BowLevelUpsData
+  m_EditorClassIdentifier: My::My.WeaponLevelUpsData
+  <Icon>k__BackingField: {fileID: -63376727, guid: 2a862facc91f5bd40bfdcb196b202f8c, type: 3}
+  <Name>k__BackingField: 3
+  _levelUps:
+  - <Type>k__BackingField: 2
+    <Price>k__BackingField: 1
+    <Stats>k__BackingField:
+      Damage: 1
+      RoundSpeed: 0
+      FlightSpeed: 2
+      LifeTime: 2
+      AttacksPerSecond: 2
+      CoolDown: 0
+      Count: 1
+      Strength: 0
+  - <Type>k__BackingField: 2
+    <Price>k__BackingField: 1
+    <Stats>k__BackingField:
+      Damage: 1
+      RoundSpeed: 0
+      FlightSpeed: 2
+      LifeTime: 2
+      AttacksPerSecond: 2
+      CoolDown: 0
+      Count: 2
+      Strength: 0
+  - <Type>k__BackingField: 2
+    <Price>k__BackingField: 1
+    <Stats>k__BackingField:
+      Damage: 1
+      RoundSpeed: 0
+      FlightSpeed: 2
+      LifeTime: 2
+      AttacksPerSecond: 2
+      CoolDown: 0
+      Count: 3
+      Strength: 0
+  - <Type>k__BackingField: 2
+    <Price>k__BackingField: 1
+    <Stats>k__BackingField:
+      Damage: 1
+      RoundSpeed: 0
+      FlightSpeed: 2
+      LifeTime: 2
+      AttacksPerSecond: 2
+      CoolDown: 0
+      Count: 4
+      Strength: 0
+  - <Type>k__BackingField: 2
+    <Price>k__BackingField: 1
+    <Stats>k__BackingField:
+      Damage: 1
+      RoundSpeed: 0
+      FlightSpeed: 2
+      LifeTime: 2
+      AttacksPerSecond: 2
+      CoolDown: 0
+      Count: 5
+      Strength: 0
+  <WeaponTemplate>k__BackingField: {fileID: 5448036965664577749, guid: 6200a664869da844ba05d015aca3bdde, type: 3}

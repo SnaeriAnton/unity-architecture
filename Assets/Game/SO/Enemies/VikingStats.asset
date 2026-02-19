@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87de1c5d2a3cd0446b53da2ec7e7025d, type: 3}
+  m_Name: VikingStats
+  m_EditorClassIdentifier: My::My.VikingStats
+  <Stats>k__BackingField:
+    Health: 2
+    Speed: 2.1
+    AttacksPerSecond: 0
+    Damage: 1
+  <AxeStats>k__BackingField:
+    FlightSpeed: 6
+    RotationSpeed: 8
+    LifeTime: 2
+    AttacksPerSecond: 2
+    Damage: 1
+  <AxeTemplate>k__BackingField: {fileID: 4589284157545309738, guid: 73c47a599c20cac4699e90cf6054119c, type: 3}

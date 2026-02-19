@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea553872c56fc7746a39d51af37a5af9, type: 3}
+  m_Name: ShieldLevelUpsData
+  m_EditorClassIdentifier: My::My.WeaponLevelUpsData
+  <Icon>k__BackingField: {fileID: 286203181, guid: 62a8775e00da2ba4ea2f9fd0888a452f, type: 3}
+  <Name>k__BackingField: 5
+  _levelUps:
+  - <Type>k__BackingField: 1
+    <Price>k__BackingField: 2
+    <Stats>k__BackingField:
+      Damage: 0
+      RoundSpeed: 0
+      FlightSpeed: 0
+      LifeTime: 0
+      AttacksPerSecond: 0
+      CoolDown: 10
+      Count: 0
+      Strength: 0
+  - <Type>k__BackingField: 1
+    <Price>k__BackingField: 2
+    <Stats>k__BackingField:
+      Damage: 0
+      RoundSpeed: 0
+      FlightSpeed: 0
+      LifeTime: 0
+      AttacksPerSecond: 0
+      CoolDown: 9
+      Count: 0
+      Strength: 0
+  - <Type>k__BackingField: 1
+    <Price>k__BackingField: 2
+    <Stats>k__BackingField:
+      Damage: 0
+      RoundSpeed: 0
+      FlightSpeed: 0
+      LifeTime: 0
+      AttacksPerSecond: 0
+      CoolDown: 8
+      Count: 0
+      Strength: 0
+  - <Type>k__BackingField: 1
+    <Price>k__BackingField: 2
+    <Stats>k__BackingField:
+      Damage: 0
+      RoundSpeed: 0
+      FlightSpeed: 0
+      LifeTime: 0
+      AttacksPerSecond: 0
+      CoolDown: 7
+      Count: 0
+      Strength: 0
+  - <Type>k__BackingField: 1
+    <Price>k__BackingField: 2
+    <Stats>k__BackingField:
+      Damage: 0
+      RoundSpeed: 0
+      FlightSpeed: 0
+      LifeTime: 0
+      AttacksPerSecond: 0
+      CoolDown: 6
+      Count: 0
+      Strength: 0
+  <WeaponTemplate>k__BackingField: {fileID: 844190603929194563, guid: 2f8d65d4b9f59dc4cb60abfd9ce9f303, type: 3}
