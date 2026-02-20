@@ -10,10 +10,10 @@ namespace Game
         [SerializeField] private UpgradeWindow _upgradeWindow;
         [SerializeField] private MenuScreen _menuScreen;
         
-        public void Construct(ProgressionSystem progression, UpgradeSystem upgradeStates, Wallet wallet, GameManager gameManager, Player player)
+        public void Construct(ProgressionSystem progression, UpgradeSystem upgradeStates, Wallet wallet, GameRoot gameRoot, Player player)
         {
-            _loseScreen.Construct(gameManager);
-            _menuScreen.Construct(gameManager);
+            _loseScreen.Construct(gameRoot);
+            _menuScreen.Construct(gameRoot);
             _upgradeWindow.Construct(progression, upgradeStates, wallet);
             _hud.Construct(player, wallet, progression);
             UIManager.Register(_hud);

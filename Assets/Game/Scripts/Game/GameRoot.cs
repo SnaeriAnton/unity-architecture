@@ -3,11 +3,10 @@ using UnityEngine;
 using Core.InputSystem;
 using Core.Pool;
 using Core.UI;
-using Game;
 
-namespace Core
+namespace Game
 {
-    public class GameComposer : MonoBehaviour
+    public class GameRoot : MonoBehaviour
     {
         private readonly List<ITickable> _tickables = new();
 
@@ -24,23 +23,42 @@ namespace Core
         private EnemySpawnerController _enemySpawnerController;
         private ProgressionSystem _progressionSystem;
         private UpgradeSystem _upgradeSystem;
-        private GameManager _gameManager;
         private Wallet _wallet;
         private Factory _factory;
         private PoolManager _poolManager;
         private EnemyDeathHandler _enemyHandler;
 
         private bool IsMobile => Application.isMobilePlatform;
-        
-        public void StartGame()
+
+        private void Update() => _tickables.ForEach(t => t.Tick());
+        private void OnDestroy() => Dispose();
+        private void Dispose() { }
+
+        private void Start()
         {
             Compose();
             Initialization();
         }
 
-        private void Update() => _tickables.ForEach(t => t.Tick());
-        private void OnDestroy() => Dispose();
-        private void Dispose() { }
+        public void StartGame()
+        {
+            _inputRoot.Input.SetActivate(true);
+            _player.StartPlay();
+            _enemySpawnerController.Start();
+            UIManager.ShowScreen<HUD>();
+        }
+
+        public void RestartRun()
+        {
+            _poolManager.Reset();
+            _wallet.Reset();
+            _player.Restart();
+            _upgradeSystem.Init();
+            _enemySpawnerController.Reset();
+            _progressionSystem.Reset();
+            UIManager.ResetScreens();
+            UIManager.ShowScreen<MenuScreen>();
+        }
 
         private void Compose()
         {
@@ -51,11 +69,10 @@ namespace Core
             _enemyHandler = new(_player, _poolManager, _generatorData);
             _enemySpawnerController = new(_player, _generatorData, _enemyHandler, _factory, _board);
             _upgradeSystem = new(_weaponLevelUpsData, _playerLevelUpsData, _factory, _player, _gameConfig, _wallet);
-            
+
             _progressionSystem = new(_upgradeSystem, _enemySpawnerController, _wallet, _config);
-            _gameManager = new(_player, _enemySpawnerController, _progressionSystem, _upgradeSystem, _wallet, _poolManager, _inputRoot.Input);
-            _player.Construct(_wallet, _progressionSystem.PickUpCrystal, _gameManager.GameOver, _board, _inputRoot.Input);
-            _uiRoot.Construct(_progressionSystem, _upgradeSystem, _wallet, _gameManager, _player);
+            _player.Construct(_wallet, _progressionSystem.PickUpCrystal, GameOver, _board, _inputRoot.Input);
+            _uiRoot.Construct(_progressionSystem, _upgradeSystem, _wallet, this, _player);
 
             _tickables.Add(_enemySpawnerController);
         }
@@ -64,6 +81,13 @@ namespace Core
         {
             _upgradeSystem.Init();
             UIManager.ShowScreen<MenuScreen>();
+        }
+
+        private void GameOver()
+        {
+            _inputRoot.Input.SetActivate(false);
+            _enemySpawnerController.Stop();
+            UIManager.ShowScreen<LoseScreen>();
         }
     }
 }

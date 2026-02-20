@@ -7,6 +7,6 @@ namespace Game
     {
         [SerializeField] private Button _homeButton;
 
-        public void Construct(GameManager gameManager) => _homeButton.onClick.AddListener(gameManager.RestartRun);
+        public void Construct(GameRoot gameRoot) => _homeButton.onClick.AddListener(gameRoot.RestartRun);
     }
 }

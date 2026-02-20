@@ -242,7 +242,7 @@ GameObject:
   - component: {fileID: 703383420}
   - component: {fileID: 703383421}
   m_Layer: 0
-  m_Name: BootManager
+  m_Name: BootRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -272,9 +272,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 703383418}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1ce155dbc23e074b83dd7e94bc7da9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 1016efbdb71a477498a6117b0cb4aae7, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::Core.BootRoot
   _dontDestroyOnLoadObject: {fileID: 332720411}
 --- !u!1 &1201667364
 GameObject:

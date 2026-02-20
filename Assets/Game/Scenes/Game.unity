@@ -2048,9 +2048,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1066149621}
-  - component: {fileID: 1066149623}
+  - component: {fileID: 1066149622}
   m_Layer: 0
-  m_Name: GameComposer
+  m_Name: GameRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2071,7 +2071,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1066149623
+--- !u!114 &1066149622
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2080,9 +2080,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1066149620}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7d79eeb4ed6f9f4ca40e1c2a31d286f, type: 3}
+  m_Script: {fileID: 11500000, guid: 189e5e82f1b28bd47b6e287fb6adf97e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.GameRoot
   _weaponLevelUpsData:
   - {fileID: 11400000, guid: d961bea5a030fa5499f048c809879eaa, type: 2}
   - {fileID: 11400000, guid: a88b8a36c0be0024089aec9b924ae3fb, type: 2}
