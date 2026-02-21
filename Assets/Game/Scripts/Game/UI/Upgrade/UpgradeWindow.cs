@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Core.GSystem;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -20,16 +22,13 @@ namespace Game
         private UpgradeSystem _upgradeStates;
         private Wallet _wallet;
 
-        public void Construct(ProgressionSystem progression, UpgradeSystem upgradeStates, Wallet wallet)
-        {
-            _progression = progression;
-            _upgradeStates = upgradeStates;
-            _wallet = wallet;
-            _closeButton.onClick.AddListener(Hide);
-        }
-        
         public override void Show()
         {
+            _progression = G.Main.Resolve<ProgressionSystem>();
+            _upgradeStates = G.Main.Resolve<UpgradeSystem>();
+            _wallet = G.Main.Resolve<Wallet>();
+            _closeButton.onClick.AddListener(Hide);
+            
             base.Show();
             _crystalText.text = _wallet.Crystals.ToString();
             _coinsText.text = _wallet.Coins.ToString();
@@ -41,6 +40,7 @@ namespace Game
         {
             base.Hide();
             _progression.UpgradeStats();
+            _closeButton.onClick.RemoveAllListeners();
         }
 
         private void Refresh()

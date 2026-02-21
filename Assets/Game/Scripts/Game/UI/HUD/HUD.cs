@@ -1,3 +1,5 @@
+using System;
+using Core.GSystem;
 using UnityEngine;
 
 namespace Game
@@ -13,15 +15,11 @@ namespace Game
         private Wallet _wallet;
         private Player _player;
 
-        public void Construct(Player player, Wallet wallet, ProgressionSystem progressionSystem)
-        {
-            _progressionSystem = progressionSystem;
-            _player = player;
-            _wallet = wallet;
-        }
-
         public override void Show()
         {
+            _progressionSystem = G.Main.Resolve<ProgressionSystem>();
+            _player = G.Main.Resolve<Player>();
+            _wallet = G.Main.Resolve<Wallet>();
             base.Show();
             UpdateHealth();
             Refresh();

@@ -1,4 +1,5 @@
 using System;
+using Core.GSystem;
 using UnityEngine;
 using Core.Pool;
 
@@ -6,21 +7,18 @@ namespace Game
 {
     public abstract class EnemyBase : MonoBehaviour, IPoolable
     {
-        protected PoolManager _poolManager;
-        protected Player _player;
         protected float _health;
+        
+        private PoolManager _poolManager;
+        private  Player _player;
         private Action _onDespawned;
-
         private Action<EnemyBase> _obDiedCallBack;
-
+        
+        protected Player Player => _player ??= G.Main.Resolve<Player>();
+        protected PoolManager Pool => _poolManager ??= G.Main.Resolve<PoolManager>();
         public int PoolID { get; private set; }
 
-        public virtual void Construct(Player player, Action<EnemyBase> obDiedCallBack, PoolManager poolManager)
-        {
-            _player = player;
-            _obDiedCallBack = obDiedCallBack;
-            _poolManager = poolManager;
-        }
+        public virtual void Construct(Action<EnemyBase> obDiedCallBack) => _obDiedCallBack = obDiedCallBack;
 
         public void TakeDamage(float damage)
         {

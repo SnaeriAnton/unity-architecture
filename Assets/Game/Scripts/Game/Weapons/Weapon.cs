@@ -1,3 +1,4 @@
+using Core.GSystem;
 using UnityEngine;
 using Core.Pool;
 
@@ -5,10 +6,12 @@ namespace Game
 {
     public abstract class Weapon : MonoBehaviour
     {
-        protected PoolManager _poolManager;
+        private PoolManager _poolManager;
+        
         protected WeaponStats _stats;
 
-        public virtual void Construct(PoolManager poolManager) => _poolManager = poolManager;
+        protected PoolManager _pool => _poolManager ??= G.Main.Resolve<PoolManager>();
+
         public virtual void Apply() { }
         public virtual void UpdateValues() { }
 

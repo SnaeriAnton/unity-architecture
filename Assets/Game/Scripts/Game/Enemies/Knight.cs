@@ -11,7 +11,7 @@ namespace Game
 
         protected virtual void Update()
         {
-            if (_player.IsDead) return;
+            if (Player.IsDead) return;
 
             if (_playerInRange)
             {
@@ -20,16 +20,16 @@ namespace Game
                 if (interval >= _stats.Stats.AttacksPerSecond)
                 {
                     _lastTimeSpawn = Time.time;
-                    _player.TakeDamage(_stats.Stats.Damage);
+                    Player.TakeDamage(_stats.Stats.Damage);
                 }
             }
 
-            transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, _stats.Stats.Speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, Player.transform.position, _stats.Stats.Speed * Time.deltaTime);
         }
         
-        public override void Construct(Player player, Action<EnemyBase> obDiedCallBack, PoolManager poolManager)
+        public override void Construct(Action<EnemyBase> obDiedCallBack)
         {
-            base.Construct(player, obDiedCallBack, poolManager);
+            base.Construct( obDiedCallBack);
             _health = _stats.Stats.Health;
         }
 
@@ -39,7 +39,7 @@ namespace Game
             {
                 _lastTimeSpawn = Time.time;
                 _playerInRange = true;
-                _player.TakeDamage(_stats.Stats.Damage);
+                Player.TakeDamage(_stats.Stats.Damage);
             }
         }
 

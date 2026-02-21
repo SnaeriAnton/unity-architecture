@@ -21,7 +21,7 @@ namespace Game
                 {
                     Vector2 direction = Random.insideUnitCircle.normalized;
                     float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                    Spear spear = _poolManager.Spawn(_spearTemplate, transform.position, Quaternion.Euler(0f, 0f, angle));
+                    Spear spear = _pool.Spawn(_spearTemplate, transform.position, Quaternion.Euler(0f, 0f, angle));
                     spear.Init(_stats, direction);
                 }
             }

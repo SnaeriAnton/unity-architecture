@@ -21,7 +21,7 @@ namespace Game
                 {
                     Vector2 direction = Random.insideUnitCircle.normalized;
                     float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                    Arrow arrow = _poolManager.Spawn(_arrowTemplate, transform.position, Quaternion.Euler(0f, 0f, angle));
+                    Arrow arrow = _pool.Spawn(_arrowTemplate, transform.position, Quaternion.Euler(0f, 0f, angle));
                     arrow.Init(_stats, direction);
                 }
             }

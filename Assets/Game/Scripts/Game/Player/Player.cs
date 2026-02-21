@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Contracts;
+using Core.GSystem;
 using Core.UI;
 using UnityEngine;
 
@@ -28,6 +29,8 @@ namespace Game
         public int CurrentHealth { get; private set; }
         public int MaxHealth => _spartanStats.Health;
         public bool IsDead => CurrentHealth <= 0;
+        
+        private Wallet Wallet => _wallet ??= G.Main.Resolve<Wallet>();
 
         private bool IsInvulnerable => _invulnTimer > 0f;
 
@@ -41,14 +44,13 @@ namespace Game
                 _invulnTimer -= Time.deltaTime;
         }
 
-        public void Construct(Wallet wallet, Action<Crystal> onCrystalCallback, Action onDiedCallback, Border board, IInput input)
+        public void Construct(Action<Crystal> onCrystalCallback, Action onDiedCallback)
         {
-            _wallet = wallet;
             _onCrystalCallback = onCrystalCallback;
             _onDiedCallback = onDiedCallback;
             _weapon = new();
-            _movement = new(transform, board, _stats.Speed);
-            _inputController = new(_movement, input);
+            _movement = new(transform, _stats.Speed);
+            _inputController = new(_movement);
         }
         
         public void AddWeapon(Weapons name, Weapon weapon) => _weapon.AddWeapon(name, weapon);
@@ -63,7 +65,7 @@ namespace Game
         public void KillEnemy()
         {
             _weapon.Update();
-            UIManager.GetScreen<HUD>().Refresh();
+            G.Main.Resolve<IUIService>().GetScreen<HUD>().Refresh();
         }
         
         public void Restart()
@@ -86,7 +88,7 @@ namespace Game
             if (IsInvulnerable) return;
             if (Shield && Shield.TryApply())
             {
-                UIManager.GetScreen<HUD>().Refresh();
+                G.Main.Resolve<IUIService>().GetScreen<HUD>().Refresh();
                 return;
             }
 
@@ -94,14 +96,14 @@ namespace Game
             CurrentHealth -= damage;
             CurrentHealth = Mathf.Clamp(CurrentHealth, 0, _spartanStats.Health);
 
-            UIManager.GetScreen<HUD>().Refresh();
+            G.Main.Resolve<IUIService>().GetScreen<HUD>().Refresh();
             if (CurrentHealth == 0) Die();
         }
 
         private void AddCoins()
         {
-            _wallet.AddCoin();
-            UIManager.GetScreen<HUD>().Refresh();
+            Wallet.AddCoin();
+            G.Main.Resolve<IUIService>().GetScreen<HUD>().Refresh();
         }
 
         private void Die()

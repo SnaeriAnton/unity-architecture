@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Core.GSystem;
 using ExtensionSystems;
 using Core.UI;
 
@@ -81,7 +82,7 @@ namespace Game
                 _player.SetWeaponStats(name, _weaponLevelUpsData[name].Stats);
             }
             
-            UIManager.GetScreen<HUD>().Refresh();
+            G.Main.Resolve<IUIService>().GetScreen<HUD>().Refresh();
         }
 
         private bool TrySpend<TStats>(LevelUpDescription<TStats> data) where TStats : struct

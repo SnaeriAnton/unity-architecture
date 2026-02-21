@@ -8,13 +8,13 @@ namespace Game
     {
         private void Update()
         {
-            if (_player.IsDead) return;
-            transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, _stats.Stats.Speed * Time.deltaTime);
+            if (Player.IsDead) return;
+            transform.position = Vector3.MoveTowards(transform.position, Player.transform.position, _stats.Stats.Speed * Time.deltaTime);
         }
 
-        public override void Construct(Player player, Action<EnemyBase> obDiedCallBack, PoolManager poolManager)
+        public override void Construct(Action<EnemyBase> obDiedCallBack)
         {
-            base.Construct(player, obDiedCallBack, poolManager);
+            base.Construct(obDiedCallBack);
             _health = _stats.Stats.Health;
         }
 
@@ -22,7 +22,7 @@ namespace Game
         {
             if (other.TryGetComponent<Player>(out _))
             {
-                _player.TakeDamage(_stats.Stats.Damage);
+                Player.TakeDamage(_stats.Stats.Damage);
                 Die();
             }
         }

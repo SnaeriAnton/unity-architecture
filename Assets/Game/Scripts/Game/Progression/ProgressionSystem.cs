@@ -1,3 +1,4 @@
+using Core.GSystem;
 using Core.UI;
 using UnityEngine;
 
@@ -31,7 +32,7 @@ namespace Game
             if (_upgradeSystem.IsMaxUpgrades) return;
 
             CurrentExperience++;
-            UIManager.GetScreen<HUD>().Refresh();
+            G.Main.Resolve<IUIService>().GetScreen<HUD>().Refresh();
 
             if (CurrentExperience >= _amountOfExperienceBeforeNextLevelUp)
             {
@@ -39,7 +40,7 @@ namespace Game
                 _wallet.AddCrystal();
                 _currentPlayerLevel++;
                 Time.timeScale = 0;
-                UIManager.ShowWindow<UpgradeWindow>();
+                G.Main.Resolve<IUIService>().ShowWindow<UpgradeWindow>();
             }
         }
 
@@ -56,7 +57,7 @@ namespace Game
             if (_upgradeSystem.IsMaxUpgrades) return;
             CurrentExperience = 0;
             _amountOfExperienceBeforeNextLevelUp = (int)(_amountOfExperienceBeforeNextLevelUp * _config.ExperienceMultiplier);
-            UIManager.GetScreen<HUD>().Refresh();
+            G.Main.Resolve<IUIService>().GetScreen<HUD>().Refresh();
         }
     }
 }
