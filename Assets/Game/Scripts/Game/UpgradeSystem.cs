@@ -73,8 +73,8 @@ namespace Game
             {
                 if (!_player.Weapons.ContainsKey(name))
                 {
-                    Weapon sword = _factory.CreateWeapon(_weaponLevelUpsData[name].LevelUpData.WeaponTemplate, _player.transform);
-                    _player.AddWeapon(name, sword);
+                    Weapon weapon = _factory.CreateWeapon(_weaponLevelUpsData[name].LevelUpData.WeaponTemplate, _player.transform);
+                    _player.AddWeapon(name, weapon);
                 }
 
                 _weaponLevelUpsData[name].LevelUp();

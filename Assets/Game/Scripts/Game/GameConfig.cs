@@ -10,6 +10,6 @@ namespace Game
         [field: SerializeField] public int StartCrystalValues { get; private set; } = 0;
         [field: SerializeField] public int StartCoinValues { get; private set; } = 0;
         
-        public List<Weapons> StartWeapons => _startWeapons;
+        public IReadOnlyList<Weapons> StartWeapons => _startWeapons;
     }
 }
