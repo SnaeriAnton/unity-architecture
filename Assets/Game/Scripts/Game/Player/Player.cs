@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Contracts;
-using Core.GSystem;
-using Core.UI;
 using UnityEngine;
+using Core.UI;
+using Core.GSystem;
 
 namespace Game
 {
@@ -11,9 +10,7 @@ namespace Game
     {
         [SerializeField] private SpriteRenderer _eyesSpriteRenderer;
         [SerializeField] private PlayerStats _stats;
-        [SerializeField] private Bow _bow;
-        [SerializeField] private Spears _spears;
-
+        
         private WeaponSystem _weapon;
         private Action<Crystal> _onCrystalCallback;
         private Action _onDiedCallback;
