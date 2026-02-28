@@ -1,4 +1,4 @@
-using Contracts;
+using Shared;
 
 namespace Core.InputSystem
 {

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dfe87a3a456f4d44be471a22be5e037, type: 3}
+  m_Name: LooCatalog
+  m_EditorClassIdentifier: Loot::Loot.LooCatalog
+  _loots:
+  - Type: 1
+    Template: {fileID: 3460377391936473129, guid: 5e5405d8996b521479cdfae5c50aeb0c, type: 3}
+  - Type: 2
+    Template: {fileID: 3868677141088828173, guid: 7bdd19d63ed0e6d4bbfc928b4a675624, type: 3}

@@ -2050,7 +2050,7 @@ GameObject:
   - component: {fileID: 1066149621}
   - component: {fileID: 1066149623}
   m_Layer: 0
-  m_Name: GameComposer
+  m_Name: 'GameCompositionRoot '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2096,6 +2096,8 @@ MonoBehaviour:
   _config: {fileID: 11400000, guid: 08bc893a1b4f2244f8595b05950d3d61, type: 2}
   _gameConfig: {fileID: 11400000, guid: dd62053c322b0c549a24d9fece7349ae, type: 2}
   _inputRoot: {fileID: 1552883264}
+  _weaponCatalog: {fileID: 11400000, guid: 880f1da7b0e3fa247ad2ad97a6ebf58d, type: 2}
+  _looCatalog: {fileID: 11400000, guid: 1b2e2b73d21c3e34ba89624852577f2b, type: 2}
 --- !u!1 &1112343723
 GameObject:
   m_ObjectHideFlags: 0
@@ -3021,8 +3023,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: My::My.Player
   _eyesSpriteRenderer: {fileID: 1237849679}
   _stats: {fileID: 11400000, guid: 8b71d8f86d3d296409cfbfe1fb64adf7, type: 2}
-  _bow: {fileID: 0}
-  _spears: {fileID: 0}
 --- !u!50 &1454436778
 Rigidbody2D:
   serializedVersion: 5

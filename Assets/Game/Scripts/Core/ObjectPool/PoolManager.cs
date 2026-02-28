@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ExtensionSystems;
+using Shared;
 
 namespace Core.Pool
 {
-    public sealed class PoolManager
+    public sealed class PoolManager : IObjectPool
     {
         private readonly Dictionary<int, IResettablePool> _pools = new();
 

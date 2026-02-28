@@ -1,5 +1,5 @@
+using Shared;
 using UnityEngine;
-using Contracts;
 
 namespace Core.InputSystem
 {
