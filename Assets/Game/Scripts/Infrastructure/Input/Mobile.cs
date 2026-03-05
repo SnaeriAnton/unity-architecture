@@ -1,6 +1,5 @@
 using System;
-using Domain;
-using Runtime;
+using UnityEngine;
 
 namespace Infrastructure
 {
@@ -8,11 +7,10 @@ namespace Infrastructure
     {
         private bool _isActive;
         
-        public event Action<Vector2f> OnClickDown;
-        public event Action<Vector2f> OnClickHold;
-        public event Action<Vector2f> OnClickUp;
-        public event Action<Vector2f> OnAxis;
-        public event Action<float, float> Move;
+        public event Action<Vector2> OnClickDown;
+        public event Action<Vector2> OnClickHold;
+        public event Action<Vector2> OnClickUp;
+        public event Action<Vector2> OnAxis;
 
         public void SetActivate(bool activate) => _isActive = activate;
         public void Update() { }

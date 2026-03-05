@@ -2,8 +2,8 @@
 {
     public enum CurrencyType
     {
-        Free,
-        Coin,
-        Crystal,
+        Free = 0,
+        Coin = 1,
+        Crystal = 2,
     }
 }

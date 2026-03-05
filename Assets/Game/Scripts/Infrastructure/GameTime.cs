@@ -1,9 +1,8 @@
-using Application;
 using UnityEngine;
 
 namespace Infrastructure
 {
-    public class GameTime : IGameTime
+    public class GameTime
     {
         public void Pause() => Time.timeScale = 0;
 

@@ -2091,12 +2091,13 @@ MonoBehaviour:
   _playerLevelUpsData: {fileID: 11400000, guid: 25ee93dc9461c884da3beca5787b8f66, type: 2}
   _uiRoot: {fileID: 1866483997}
   _player: {fileID: 1454436777}
-  _board: {fileID: 879999816}
+  _border: {fileID: 879999816}
   _generatorData: {fileID: 11400000, guid: e2fc97214b3950746922d83ca4cab05c, type: 2}
   _config: {fileID: 11400000, guid: 08bc893a1b4f2244f8595b05950d3d61, type: 2}
   _gameConfig: {fileID: 11400000, guid: dd62053c322b0c549a24d9fece7349ae, type: 2}
   _inputRoot: {fileID: 1552883264}
   _stats: {fileID: 11400000, guid: 8b71d8f86d3d296409cfbfe1fb64adf7, type: 2}
+  _typeOfCurrency: {fileID: 11400000, guid: cc52422715781c14d8daf8f7923ba154, type: 2}
 --- !u!1 &1112343723
 GameObject:
   m_ObjectHideFlags: 0
@@ -2189,7 +2190,6 @@ MonoBehaviour:
   _closeButton: {fileID: 685114707}
   _coinsText: {fileID: 2012210061}
   _crystalText: {fileID: 647794025}
-  _typeOfCurrency: {fileID: 11400000, guid: cc52422715781c14d8daf8f7923ba154, type: 2}
   _upgradeButtonTemplate: {fileID: 7660211265997826302, guid: 92ffc18f0f7776846931fa9bd5684d6d, type: 3}
   _buttonsContainer: {fileID: 603231786}
 --- !u!1 &1157830368

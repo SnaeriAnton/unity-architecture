@@ -1,30 +1,30 @@
-using Domain;
+using System;
+using Infrastructure;
 
 namespace Application
 {
-    public class ProgressionService : IProgression
+    public class ProgressionService
     {
-        private readonly Wallet _wallet;
+        private readonly WalletService _wallet;
         private readonly ProgressSettings _settings;
-        private readonly IGameTime _gameTime;
-        private readonly IUIRouter _uiRouter;
-        private readonly IHUDRefresher _refresher;
-        private readonly IEnemySpawner _spawner;
-        private readonly IUpgradeService _upgradeService;
+        private readonly GameTime _gameTime;
+        private readonly EnemySpawnerController _spawner;
+        private readonly UpgradeSystem _upgradeService;
 
         private int _amountOfExperienceBeforeNextLevelUp;
         private int _currentPlayerLevel;
 
+        public event Action OnProgression;
+        public event Action OnReachedGoal;
+        
         public int MaxUpgrade => _amountOfExperienceBeforeNextLevelUp;
         public int CurrentExperience { get; private set; }
 
-        public ProgressionService(Wallet wallet, ProgressSettings settings, IGameTime gameTime, IUIRouter uiRouter, IHUDRefresher refresher, IEnemySpawner spawner, IUpgradeService upgradeService)
+        public ProgressionService(WalletService wallet, ProgressSettings settings, GameTime gameTime, EnemySpawnerController spawner, UpgradeSystem upgradeService)
         {
             _wallet = wallet;
             _settings = settings;
             _gameTime = gameTime;
-            _uiRouter = uiRouter;
-            _refresher = refresher;
             _spawner = spawner;
             _upgradeService = upgradeService;
             _amountOfExperienceBeforeNextLevelUp = _settings.ExperienceBeforeLevelUp;
@@ -35,7 +35,7 @@ namespace Application
             if (_upgradeService.IsMaxUpgrades) return;
 
             CurrentExperience++;
-            _refresher.Refresh();
+            OnProgression?.Invoke();
 
             if (CurrentExperience >= _amountOfExperienceBeforeNextLevelUp)
             {
@@ -43,7 +43,7 @@ namespace Application
                 _wallet.AddCrystal();
                 _currentPlayerLevel++;
                 _gameTime.Pause();
-                _uiRouter.ShowUpgrade();
+                OnReachedGoal?.Invoke();
             }
         }
 
@@ -60,7 +60,7 @@ namespace Application
             if (_upgradeService.IsMaxUpgrades) return;
             CurrentExperience = 0;
             _amountOfExperienceBeforeNextLevelUp = (int)(_amountOfExperienceBeforeNextLevelUp * _settings.ExperienceMultiplier);
-            _refresher.Refresh();
+            OnProgression?.Invoke();
         }
     }
 }

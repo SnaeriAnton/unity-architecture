@@ -1,11 +1,10 @@
-using Application;
-using Domain;
-using Runtime;
 using UnityEngine;
+using Application;
+using Infrastructure;
 
 namespace Presentation
 {
-    public class HUD : Screen, IHUDRefresher
+    public class HUD : Screen
     {
         [SerializeField] private HealthPanel _healthPanel;
         [SerializeField] private CoinsView _coinsView;
@@ -13,14 +12,34 @@ namespace Presentation
         [SerializeField] private ProgressBarView _progressBarView;
 
         private ProgressionService _progression;
-        private Wallet _wallet;
+        private WalletService _wallet;
         private Player _player;
+        private EnemyDeathHandler _handler;
+        private UpgradeSystem _upgradeSystem;
 
-        public void Construct(Player player, Wallet wallet, ProgressionService progression)
+        public void Construct(Player player, WalletService wallet, ProgressionService progression, EnemyDeathHandler handler, UpgradeSystem upgradeSystem)
         {
             _progression = progression;
             _player = player;
             _wallet = wallet;
+            _handler = handler;
+            _upgradeSystem = upgradeSystem;
+
+            _handler.OnEnemyDied += Refresh;
+            _progression.OnProgression += Refresh;
+            _wallet.OnWalletChanged += (value, _) => _coinsView.ShowCoinsText(value);
+            _upgradeSystem.OnUpgrade += UpdateHealth;
+            _upgradeSystem.OnUpgrade += Refresh;
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            _progression.OnProgression -= Refresh;
+            _wallet.OnWalletChanged -= (value, _) => _coinsView.ShowCoinsText(value);
+            _handler.OnEnemyDied -= Refresh;
+            _upgradeSystem.OnUpgrade -= Refresh;
+            _upgradeSystem.OnUpgrade -= UpdateHealth;
         }
 
         public override void Show()
@@ -35,7 +54,6 @@ namespace Presentation
             if (!gameObject.activeSelf) return;
             _progressBarView.UpdateProgressbar(_progression.CurrentExperience, _progression.MaxUpgrade);
             _healthPanel.ChangeHealth(_player.CurrentHealth);
-            _coinsView.ShowCoinsText(_wallet.Coins);
 
             if (_player.Shield) _shieldView.UpdateCoolDown(_player.Shield.CurrentCoolDownCount, _player.Shield.CoolDown);
         }

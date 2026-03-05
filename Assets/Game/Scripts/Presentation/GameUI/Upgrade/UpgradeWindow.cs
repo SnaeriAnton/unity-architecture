@@ -3,40 +3,48 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Application;
-using Domain;
 
 namespace Presentation
 {
-    public class UpgradeWindow : Window
+    public class UpgradeWindow : Screen
     {
         [SerializeField] private Button _closeButton;
         [SerializeField] private TextMeshProUGUI _coinsText;
         [SerializeField] private TextMeshProUGUI _crystalText;
-        [SerializeField] private TypeOfCurrency _typeOfCurrency;
         [SerializeField] private UpgradeButton _upgradeButtonTemplate;
         [SerializeField] private RectTransform _buttonsContainer;
 
-        private readonly Dictionary<Weapons, UpgradeButton> _upgradeButtonsDictionary = new();
+        private readonly Dictionary<int, UpgradeButton> _upgradeButtonsDictionary = new();
 
-        private Dictionary<Weapons, Sprite> _upgradeIconDictionary = new();
+        private Dictionary<int, Sprite> _upgradeIconDictionary;
+        private Dictionary<int, Sprite> _currencyOfTypes;
         private ProgressionService _progression;
         private UpgradeSystem _upgradeStates;
-        private Wallet _wallet;
+        private WalletService _wallet;
 
-        public void Construct(IReadOnlyDictionary<Weapons, Sprite> upgradeIconDictionary, ProgressionService progression, UpgradeSystem upgradeStates, Wallet wallet)
+        public void Construct(IReadOnlyDictionary<int, Sprite> upgradeIconDictionary, IReadOnlyDictionary<int, Sprite> currencyOfTypes, ProgressionService progression, UpgradeSystem upgradeStates, WalletService wallet)
         {
             _upgradeIconDictionary = new(upgradeIconDictionary);
+            _currencyOfTypes = new(currencyOfTypes);
             _progression = progression;
             _upgradeStates = upgradeStates;
             _wallet = wallet;
             _closeButton.onClick.AddListener(Hide);
+
+            _upgradeStates.OnUpgrade += Refresh;
+            _wallet.OnWalletChanged += ShowValues;
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            _upgradeStates.OnUpgrade -= Refresh;
+            _wallet.OnWalletChanged -= ShowValues;
         }
 
         public override void Show()
         {
             base.Show();
-            _crystalText.text = _wallet.Crystals.ToString();
-            _coinsText.text = _wallet.Coins.ToString();
 
             Refresh();
         }
@@ -49,38 +57,34 @@ namespace Presentation
 
         private void Refresh()
         {
-            SetInfo(Weapons.Player,
-                _upgradeStates.PlayerLevelUpInfo.GetNextStats().Type,
-                _upgradeIconDictionary[Weapons.Player],
-                _upgradeStates.PlayerLevelUpInfo.GetNextStats().Price,
-                _upgradeStates.PlayerLevelUpInfo.CurrentLevelUp,
-                _upgradeStates.PlayerLevelUpInfo.CountLevelUps);
+            List<UpgradeInfo> upgradeInfo = new(_upgradeStates.GetUpgradeInfo());
 
-            foreach (KeyValuePair<Weapons, LevelUpInfo<WeaponUpgradeDefinition, WeaponStats>> weapon in _upgradeStates.WeaponLevelUpsData)
-            {
-                UpgradeDescription<WeaponStats> description = weapon.Value.GetNextStats();
-                SetInfo(weapon.Key, description.Type, _upgradeIconDictionary[weapon.Key], description.Price, weapon.Value.CurrentLevelUp, weapon.Value.CountLevelUps);
-            }
+            foreach (UpgradeInfo weapon in upgradeInfo)
+                SetInfo(weapon.NameID, weapon.CurrencyID, weapon.Icon, weapon.Price, weapon.CurrentLevel, weapon.MaxLevels);
         }
 
-        private void SetInfo(Weapons name, CurrencyType currencyType, Sprite icon, int price, int currentLevel, int maxLevels)
+        private void SetInfo(int nameID, int currencyID, Sprite icon, int price, int currentLevel, int maxLevels)
         {
-            if (!_upgradeButtonsDictionary.ContainsKey(name))
+            if (!_upgradeButtonsDictionary.ContainsKey(nameID))
             {
-                _upgradeButtonsDictionary[name] = Instantiate(_upgradeButtonTemplate, _buttonsContainer);
-                _upgradeButtonsDictionary[name].Construct(OnClick, _typeOfCurrency, icon, name);
+                _upgradeButtonsDictionary[nameID] = Instantiate(_upgradeButtonTemplate, _buttonsContainer);
+                _upgradeButtonsDictionary[nameID].Construct(OnClick, _currencyOfTypes[currencyID], icon, nameID);
             }
 
-            _upgradeButtonsDictionary[name].UpdateValues(currencyType, price, currentLevel, maxLevels);
+            _upgradeButtonsDictionary[nameID].UpdateValues(currencyID, price, currentLevel, maxLevels);
         }
 
         private void OnClick(UpgradeButton upgradeButton)
         {
-            if (!_upgradeStates.TryUpgrade(upgradeButton.Name)) return;
+            if (!_upgradeStates.TryUpgrade(upgradeButton.NameID)) return;
 
-            _crystalText.text = _wallet.Crystals.ToString();
-            _coinsText.text = _wallet.Coins.ToString();
-            Refresh();
+            //Refresh();
+        }
+
+        private void ShowValues(int coins, int crystal)
+        {
+            _coinsText.text = coins.ToString();
+            _coinsText.text = crystal.ToString();
         }
     }
 }

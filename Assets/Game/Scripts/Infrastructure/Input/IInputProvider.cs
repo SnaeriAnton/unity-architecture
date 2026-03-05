@@ -1,7 +1,4 @@
-using Application;
-using Runtime;
-
 namespace Infrastructure
 {
-    public interface IInputProvider : IInput, IUpdatable, IRuntimeInput { }
+    public interface IInputProvider : IInput, IUpdatable { }
 }

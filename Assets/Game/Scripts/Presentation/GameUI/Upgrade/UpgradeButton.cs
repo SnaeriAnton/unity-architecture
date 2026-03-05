@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Domain;
 
 namespace Presentation
 {
@@ -18,23 +17,21 @@ namespace Presentation
         [SerializeField] private GameObject _unlockPanel;
         [SerializeField] private GameObject _priceObject;
 
-        private TypeOfCurrency _typeOfCurrency;
-
-        public Weapons Name { get; private set; }
-        public CurrencyType CurrencyType { get; private set; }
+        public int NameID { get; private set; }
+        public int CurrencyID { get; private set; }
         public int Price { get; private set; }
 
-        public void Construct(Action<UpgradeButton> onUpgrade, TypeOfCurrency typeOfCurrency, Sprite icon, Weapons name)
+        public void Construct(Action<UpgradeButton> onUpgrade, Sprite currency, Sprite icon, int nameID)
         {
-            _typeOfCurrency = typeOfCurrency;
             _weaponIcon.sprite = icon;
-            Name = name;
+            NameID = nameID;
             _upgradeButton.onClick.AddListener(() => onUpgrade.Invoke(this));
+            _currencyIcon.sprite = currency;
         }
 
-        public void UpdateValues(CurrencyType currencyType, int price, int level, int maxLevels)
+        public void UpdateValues(int currencyID, int price, int level, int maxLevels)
         {
-            CurrencyType = currencyType;
+            CurrencyID = currencyID;
 
             if (level < 0)
             {
@@ -59,7 +56,7 @@ namespace Presentation
 
             Price = price;
             _priceText.text = Price.ToString();
-            _currencyIcon.sprite = _typeOfCurrency.GetSprite(currencyType);
+
         }
     }
 }

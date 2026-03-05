@@ -1,32 +1,35 @@
-using Domain;
+using System;
+using Infrastructure;
 
 namespace Application
 {
     public class GameSessionService
     {
-        private readonly Wallet _wallet;
+        private readonly WalletService _wallet;
         private readonly IInput _input;
-        private readonly IUIRouter _uiRouter;
-        private readonly IPlayerSession _player;
-        private readonly IEnemySpawner _spawner;
-        private readonly IProgression _progression;
-        private readonly IPoolService _pool;
-        private readonly IUpgradeService _upgrade;
+        private readonly Player _player;
+        private readonly EnemySpawnerController _spawner;
+        private readonly ProgressionService _progression;
+        private readonly PoolManager _pool;
+        private readonly UpgradeSystem _upgrade;
+        
+        public event Action OnStartedGame;
+        public event Action OnLost;
+        public event Action OnRestartGame;
+        public event Action OnResetValues;
 
         public GameSessionService(
-            Wallet wallet, 
-            IInput input, 
-            IUIRouter uiRouter, 
-            IPlayerSession player, 
-            IEnemySpawner spawner, 
-            IProgression progression, 
-            IPoolService pool, 
-            IUpgradeService upgrade
+            WalletService wallet, 
+            IInput input,
+            Player player, 
+            EnemySpawnerController spawner, 
+            ProgressionService progression, 
+            PoolManager pool, 
+            UpgradeSystem upgrade
             )
         {
             _wallet = wallet;
             _input = input;
-            _uiRouter = uiRouter;
             _player = player;
             _spawner = spawner;
             _progression = progression;
@@ -39,14 +42,14 @@ namespace Application
             _input.SetActivate(true);
             _player.StartPlay();
             _spawner.Start();
-            _uiRouter.ShowHud();
+            OnStartedGame?.Invoke();
         }
 
         public void GameOver()
         {
             _input.SetActivate(false);
             _spawner.Stop();
-            _uiRouter.ShowLose();
+            OnLost?.Invoke();
         }
 
         public void RestartRun()
@@ -57,8 +60,8 @@ namespace Application
             _upgrade.Init();
             _spawner.Reset();
             _progression.Reset();
-            _uiRouter.ResetScreens();
-            _uiRouter.ShowMenu();
+            OnResetValues?.Invoke();
+            OnRestartGame?.Invoke();
         }
     }
 }

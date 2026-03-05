@@ -1,24 +1,22 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
-using Application;
-using Runtime;
 
 namespace Infrastructure
 {
-    public class EnemySpawnerController : ITickable, IEnemySpawner
+    public class EnemySpawnerController : ITickable
     {
-        private readonly GeneratorSettings _data;
+        private readonly GeneratorData _data;
         private readonly Player _player;
         private readonly Border _board;
         private readonly Factory _factory;
         private readonly EnemyDeathHandler _handler;
 
-        private GeneratorInfoStage _currentStage;
+        private GeneratorStage _currentStage;
         private bool _isSpawning;
         private int _currentStageIndex;
         private float _spawnTimer;
 
-        public EnemySpawnerController(Player player, GeneratorSettings data, EnemyDeathHandler handler, Factory factory, Border board)
+        public EnemySpawnerController(Player player, GeneratorData data, EnemyDeathHandler handler, Factory factory, Border board)
         {
             _player = player;
             _data = data;

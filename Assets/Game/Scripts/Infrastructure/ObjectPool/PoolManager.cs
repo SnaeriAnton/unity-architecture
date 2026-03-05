@@ -1,12 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Application;
 using Domain;
-using Runtime;
 
 namespace Infrastructure
 {
-    public sealed class PoolManager : IPoolService
+    public sealed class PoolManager
     {
         private readonly Dictionary<int, IResettablePool> _pools = new();
 

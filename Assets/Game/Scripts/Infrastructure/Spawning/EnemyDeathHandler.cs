@@ -1,6 +1,6 @@
-using Application;
-using Runtime;
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Infrastructure
 {
@@ -8,29 +8,29 @@ namespace Infrastructure
     {
         private readonly Player _player;
         private readonly PoolManager _pool;
-        private readonly GeneratorSettings _data;
-        private readonly IHUDRefresher _refresher;
+        private readonly GeneratorData _generatorData;
         
-        public EnemyDeathHandler(Player player, PoolManager pool, GeneratorSettings data, IHUDRefresher refresher)
+        public event Action OnEnemyDied;
+        
+        public EnemyDeathHandler(Player player, PoolManager pool, GeneratorData generatorData)
         {
             _player = player;
             _pool = pool;
-            _data = data;
-            _refresher = refresher;
+            _generatorData = generatorData;
         }
         
         public void Handle(EnemyBase enemy)
         {
             _player.KillEnemy();
-            _refresher.Refresh();
+            OnEnemyDied?.Invoke();
 
             _pool.Despawn(enemy);
             float chance = Random.Range(0f, 1f);
 
-            if (chance <= _data.CoinsChanceOnSpawn)
-                _pool.Spawn(_data.CoinTemplate, enemy.transform.position, Quaternion.identity);
-            else if (_data.CoinsChanceOnSpawn + _data.CrystalsChanceOnSpawn >= chance)
-                _pool.Spawn(_data.CrystalTemplate, enemy.transform.position, Quaternion.identity);
+            if (chance <= _generatorData.CoinsChanceOnSpawn)
+                _pool.Spawn(_generatorData.CoinTemplate, enemy.transform.position, Quaternion.identity);
+            else if (_generatorData.CoinsChanceOnSpawn + _generatorData.CrystalsChanceOnSpawn >= chance)
+                _pool.Spawn(_generatorData.CrystalTemplate, enemy.transform.position, Quaternion.identity);
         }
     }
 }
