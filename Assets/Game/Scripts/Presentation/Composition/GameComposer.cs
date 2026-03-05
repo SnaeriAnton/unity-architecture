@@ -15,7 +15,7 @@ namespace Presentation
         [SerializeField] private PlayerLevelUpsData _playerLevelUpsData;
         [SerializeField] private UIRoot _uiRoot;
         [SerializeField] private Player _player;
-        [SerializeField] private Border _board;
+        [SerializeField] private Border _border;
         [SerializeField] private GeneratorData _generatorData;
         [SerializeField] private ProgressConfig _config;
         [SerializeField] private GameConfig _gameConfig;
@@ -65,7 +65,7 @@ namespace Presentation
             _factory = new(weaponTemplates, _poolManager, _player);
             _enemyHandler = new(_player, _poolManager, generatorSettings, _uiRoot.HUD);
             
-            _enemySpawnerController = new(_player, generatorSettings, _enemyHandler, _factory, _board);
+            _enemySpawnerController = new(_player, generatorSettings, _enemyHandler, _factory, _border);
 
             GameSettings gameSettings = new(_gameConfig.StartWeapons, _gameConfig.StartCoinValues, _gameConfig.StartCrystalValues);
             List<WeaponUpgradeDefinition> weaponLevelUpsData = new();
@@ -89,7 +89,7 @@ namespace Presentation
             ProgressSettings progressSettings = new(_config.ExperienceMultiplier, _config.LevelUpStageStep, _config.ExperienceBeforeLevelUp);
             _progression = new(_wallet, progressSettings, _gameTime, _uiRoot, _uiRoot.HUD, _enemySpawnerController, _upgradeSystem);
             _game = new(_wallet, _inputRoot.Input, _uiRoot, _playerSession, _enemySpawnerController, _progression, _poolManager, _upgradeSystem);
-            _player.Construct(_walletService.AddCoin, _progression.PickUpCrystal, _game.GameOver, _uiRoot.HUD.Refresh, _board, _inputRoot.RuntimeInput, _stats.IFramesDuration, _stats.Speed);
+            _player.Construct(_walletService.AddCoin, _progression.PickUpCrystal, _game.GameOver, _uiRoot.HUD.Refresh, _border, _inputRoot.RuntimeInput, _stats.IFramesDuration, _stats.Speed);
             _uiRoot.Construct(upgradeIconDictionary, _progression, _upgradeSystem, _wallet, _game, _player);
 
             _tickables.Add(_enemySpawnerController);

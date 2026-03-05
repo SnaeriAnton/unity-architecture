@@ -1625,7 +1625,7 @@ GameObject:
   - component: {fileID: 879999814}
   - component: {fileID: 879999816}
   m_Layer: 0
-  m_Name: Board
+  m_Name: Border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2091,7 +2091,7 @@ MonoBehaviour:
   _playerLevelUpsData: {fileID: 11400000, guid: 25ee93dc9461c884da3beca5787b8f66, type: 2}
   _uiRoot: {fileID: 1866483997}
   _player: {fileID: 1454436777}
-  _board: {fileID: 879999816}
+  _border: {fileID: 879999816}
   _generatorData: {fileID: 11400000, guid: e2fc97214b3950746922d83ca4cab05c, type: 2}
   _config: {fileID: 11400000, guid: 08bc893a1b4f2244f8595b05950d3d61, type: 2}
   _gameConfig: {fileID: 11400000, guid: dd62053c322b0c549a24d9fece7349ae, type: 2}
@@ -3706,6 +3706,7 @@ MonoBehaviour:
   _loseScreen: {fileID: 502230205}
   _upgradeWindow: {fileID: 1112343727}
   _menuScreen: {fileID: 1829605803}
+  _currentScreen: {fileID: 0}
 --- !u!1 &1921347998
 GameObject:
   m_ObjectHideFlags: 0

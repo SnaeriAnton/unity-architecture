@@ -39,14 +39,14 @@ namespace Runtime
                 _invulnTimer -= Time.deltaTime;
         }
 
-        public void Construct(Action onAddCoin, Action onCrystalCallback, Action onDiedCallback, Action onTakeDamage, Border board, IRuntimeInput input, float iFramesDuration, float speed)
+        public void Construct(Action onAddCoin, Action onCrystalCallback, Action onDiedCallback, Action onTakeDamage, Border border, IRuntimeInput input, float iFramesDuration, float speed)
         {
             _onAddCoin = onAddCoin;
             _onCrystalCallback = onCrystalCallback;
             _onDiedCallback = onDiedCallback;
             _onTakeDamage = onTakeDamage;
             _weapon = new();
-            _movement = new(transform, board, speed);
+            _movement = new(transform, border, speed);
             _inputController = new(_movement, input);
             _iFramesDuration = iFramesDuration;
         }
