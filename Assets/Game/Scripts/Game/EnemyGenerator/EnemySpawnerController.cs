@@ -7,7 +7,7 @@ namespace Game
     {
         private readonly GeneratorData _data;
         private readonly Player _player;
-        private readonly Border _board;
+        private readonly Border _border;
         private readonly Factory _factory;
         private readonly EnemyDeathHandler _handler;
 
@@ -16,13 +16,13 @@ namespace Game
         private int _currentStageIndex;
         private float _spawnTimer;
 
-        public EnemySpawnerController(Player player, GeneratorData data, EnemyDeathHandler handler, Factory factory, Border board)
+        public EnemySpawnerController(Player player, GeneratorData data, EnemyDeathHandler handler, Factory factory, Border border)
         {
             _player = player;
             _data = data;
             _factory = factory;
             _handler = handler;
-            _board = board;
+            _border = border;
             _spawnTimer = 0f;
         }
 
@@ -42,7 +42,7 @@ namespace Game
             if (_spawnTimer < _currentStage.SpawnInterval) return;
 
             _spawnTimer = 0f;
-            _factory.SpawnEnemy(_currentStage.Enemies[Random.Range(0, _currentStage.Enemies.Count)], _handler.Handle, _board.PickPoint(_player.transform.position, _data.RadiusPlayer));
+            _factory.SpawnEnemy(_currentStage.Enemies[Random.Range(0, _currentStage.Enemies.Count)], _handler.Handle, _border.PickPoint(_player.transform.position, _data.RadiusPlayer));
         }
 
         public void Reset()

@@ -15,7 +15,7 @@ namespace Core
         [SerializeField] private PlayerLevelUpsData _playerLevelUpsData;
         [SerializeField] private UIRoot _uiRoot;
         [SerializeField] private Player _player;
-        [SerializeField] private Border _board;
+        [SerializeField] private Border _border;
         [SerializeField] private GeneratorData _generatorData;
         [SerializeField] private ProgressConfig _config;
         [SerializeField] private GameConfig _gameConfig;
@@ -49,12 +49,12 @@ namespace Core
             _wallet = new(_gameConfig.StartCoinValues, _gameConfig.StartCrystalValues);
             _factory = new(_poolManager, _player);
             _enemyHandler = new(_player, _poolManager, _generatorData);
-            _enemySpawnerController = new(_player, _generatorData, _enemyHandler, _factory, _board);
+            _enemySpawnerController = new(_player, _generatorData, _enemyHandler, _factory, _border);
             _upgradeSystem = new(_weaponLevelUpsData, _playerLevelUpsData, _factory, _player, _gameConfig, _wallet);
             
             _progressionSystem = new(_upgradeSystem, _enemySpawnerController, _wallet, _config);
             _gameManager = new(_player, _enemySpawnerController, _progressionSystem, _upgradeSystem, _wallet, _poolManager, _inputRoot.Input);
-            _player.Construct(_wallet, _progressionSystem.PickUpCrystal, _gameManager.GameOver, _board, _inputRoot.Input);
+            _player.Construct(_wallet, _progressionSystem.PickUpCrystal, _gameManager.GameOver, _border, _inputRoot.Input);
             _uiRoot.Construct(_progressionSystem, _upgradeSystem, _wallet, _gameManager, _player);
 
             _tickables.Add(_enemySpawnerController);

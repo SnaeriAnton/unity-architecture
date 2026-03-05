@@ -39,13 +39,13 @@ namespace Game
                 _invulnTimer -= Time.deltaTime;
         }
 
-        public void Construct(Wallet wallet, Action<Crystal> onCrystalCallback, Action onDiedCallback, Border board, IInput input)
+        public void Construct(Wallet wallet, Action<Crystal> onCrystalCallback, Action onDiedCallback, Border border, IInput input)
         {
             _wallet = wallet;
             _onCrystalCallback = onCrystalCallback;
             _onDiedCallback = onDiedCallback;
             _weapon = new();
-            _movement = new(transform, board, _stats.Speed);
+            _movement = new(transform, border, _stats.Speed);
             _inputController = new(_movement, input);
         }
         
