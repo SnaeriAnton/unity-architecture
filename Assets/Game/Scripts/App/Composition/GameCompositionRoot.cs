@@ -24,7 +24,7 @@ namespace App
         [SerializeField] private PlayerLevelUpsData _playerLevelUpsData;
         [SerializeField] private UIRoot _uiRoot;
         [SerializeField] private Player.Player _player;
-        [SerializeField] private Border _board;
+        [SerializeField] private Border _border;
         [SerializeField] private GeneratorData _generatorData;
         [SerializeField] private ProgressConfig _config;
         [SerializeField] private GameConfig _gameConfig;
@@ -74,12 +74,12 @@ namespace App
             _weaponsFactory = new(_weaponSystem, _weaponCatalog, _poolManager);
             _enemiesFactory = new(_poolManager, _player);
             _enemyHandler = new(_player, _poolManager, _lootFactory, _generatorData);
-            _enemySpawnerController = new(_player, _generatorData, _enemyHandler, _enemiesFactory, _board);
+            _enemySpawnerController = new(_player, _generatorData, _enemyHandler, _enemiesFactory, _border);
             _upgradeSystem = new(_weaponLevelUpsData, _gameConfig.StartWeapons, _playerLevelUpsData, _weaponsFactory, _player, _wallet);
 
             _progressionSystem = new(_config, _upgradeSystem, _enemySpawnerController, _wallet);
             _gameManager = new(_player, _enemySpawnerController, _progressionSystem, _upgradeSystem, _wallet, _poolManager, _inputRoot.Input);
-            _player.Construct(_gameManager.GameOver, _weaponSystem, _board, _inputRoot.Input);
+            _player.Construct(_gameManager.GameOver, _weaponSystem, _border, _inputRoot.Input);
             _uiRoot.Construct(_upgradeSystem);
 
             _tickables.Add(_enemySpawnerController);

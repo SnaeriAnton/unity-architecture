@@ -7,23 +7,23 @@ namespace Enemies
     public class EnemySpawnerController : ITickable, IEnemySpawner
     {
         private readonly GeneratorData _data;
-        private readonly ITarget _target;
         private readonly EnemiesFactory _factory;
         private readonly EnemyDeathHandler _handler;
-        private readonly IWorldBounds _board;
+        private readonly ITarget _target;
+        private readonly IWorldBounds _border;
 
         private GeneratorStage _currentStage;
         private bool _isSpawning;
         private int _currentStageIndex;
         private float _spawnTimer;
 
-        public EnemySpawnerController(ITarget target, GeneratorData data, EnemyDeathHandler handler, EnemiesFactory factory, IWorldBounds board)
+        public EnemySpawnerController(ITarget target, GeneratorData data, EnemyDeathHandler handler, EnemiesFactory factory, IWorldBounds border)
         {
             _target = target;
             _data = data;
             _factory = factory;
             _handler = handler;
-            _board = board;
+            _border = border;
             _spawnTimer = 0f;
         }
 
@@ -43,7 +43,7 @@ namespace Enemies
             if (_spawnTimer < _currentStage.SpawnInterval) return;
 
             _spawnTimer = 0f;
-            _factory.SpawnEnemy(_currentStage.Enemies[Random.Range(0, _currentStage.Enemies.Count)], _handler.Handle, _board.PickPoint(_target.Position, _data.RadiusPlayer));
+            _factory.SpawnEnemy(_currentStage.Enemies[Random.Range(0, _currentStage.Enemies.Count)], _handler.Handle, _border.PickPoint(_target.Position, _data.RadiusPlayer));
         }
 
         public void Reset()

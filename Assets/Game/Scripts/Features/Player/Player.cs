@@ -35,11 +35,11 @@ namespace Player
                 _invulnTimer -= Time.deltaTime;
         }
 
-        public void Construct(Action onDiedCallback, IWeapon weapon, IWorldBounds board, IInput input)
+        public void Construct(Action onDiedCallback, IWeapon weapon, IWorldBounds border, IInput input)
         {
             _weapon = weapon;
             _onDiedCallback = onDiedCallback;
-            _movement = new(transform, board, _stats.Speed);
+            _movement = new(transform, border, _stats.Speed);
             _inputController = new(_movement, input);
         }
 

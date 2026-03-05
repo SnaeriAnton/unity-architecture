@@ -6,15 +6,15 @@ namespace Player
     public class PlayerMovement
     {
         private readonly Transform _player;
-        private readonly IWorldBounds _board;
+        private readonly IWorldBounds _border;
         private readonly float _speed;
 
         private Vector3 _newPosition;
         
-        public PlayerMovement(Transform player, IWorldBounds board, float speed)
+        public PlayerMovement(Transform player, IWorldBounds border, float speed)
         {
             _player = player;
-            _board = board;
+            _border = border;
             _speed = speed;
         }
         
@@ -22,8 +22,8 @@ namespace Player
         {
             float speed = _speed * Time.deltaTime;
             axis = (axis * speed) + (Vector2)_player.position;
-            float x = Mathf.Clamp(axis.x, (_board.Size.x / 2 * -1) + _player.localScale.x / 2, _board.Size.x / 2 - _player.localScale.x / 2);
-            float y = Mathf.Clamp(axis.y, (_board.Size.y / 2 * -1) + _player.localScale.y / 2, _board.Size.y / 2 - _player.localScale.y / 2);
+            float x = Mathf.Clamp(axis.x, (_border.Size.x / 2 * -1) + _player.localScale.x / 2, _border.Size.x / 2 - _player.localScale.x / 2);
+            float y = Mathf.Clamp(axis.y, (_border.Size.y / 2 * -1) + _player.localScale.y / 2, _border.Size.y / 2 - _player.localScale.y / 2);
             _newPosition.x = x;
             _newPosition.y = y;
             _player.position = _newPosition;
