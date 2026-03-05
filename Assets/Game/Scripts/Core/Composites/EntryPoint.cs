@@ -17,7 +17,7 @@ namespace Core
         [SerializeField] private PlayerLevelUpsData _playerLevelUpsData;
         [SerializeField] private UIRoot _uiRoot;
         [SerializeField] private Player _player;
-        [SerializeField] private Border _board;
+        [SerializeField] private Border _border;
         [SerializeField] private GeneratorData _generatorData;
         [SerializeField] private ProgressConfig _config;
         [SerializeField] private GameConfig _gameConfig;
@@ -52,7 +52,7 @@ namespace Core
             _wallet = new(_gameConfig.StartCoinValues, _gameConfig.StartCrystalValues);
             _factory = new();
             _enemyHandler = new(_player, _poolManager, _generatorData);
-            _enemySpawnerController = new(_player, _generatorData, _enemyHandler, _factory, _board);
+            _enemySpawnerController = new(_player, _generatorData, _enemyHandler, _factory, _border);
             _upgradeSystem = new(_weaponLevelUpsData, _playerLevelUpsData, _factory, _player, _gameConfig, _wallet);
             
             _progressionSystem = new(_upgradeSystem, _enemySpawnerController, _wallet, _config);
@@ -67,7 +67,7 @@ namespace Core
             _g.Register(this);
             _g.Register(_uiRoot);
             _g.Register(_player);
-            _g.Register(_board);
+            _g.Register(_border);
             _g.Register(_generatorData);
             _g.Register(_config);
             _g.Register(_gameConfig);
