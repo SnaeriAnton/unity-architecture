@@ -20,14 +20,14 @@ namespace Presentation
 
         private Dictionary<Weapons, Sprite> _upgradeIconDictionary = new();
         private ProgressionService _progression;
-        private UpgradeSystem _upgradeStates;
+        private UpgradeSystem _upgrade;
         private Wallet _wallet;
 
-        public void Construct(IReadOnlyDictionary<Weapons, Sprite> upgradeIconDictionary, ProgressionService progression, UpgradeSystem upgradeStates, Wallet wallet)
+        public void Construct(IReadOnlyDictionary<Weapons, Sprite> upgradeIconDictionary, ProgressionService progression, UpgradeSystem upgrade, Wallet wallet)
         {
             _upgradeIconDictionary = new(upgradeIconDictionary);
             _progression = progression;
-            _upgradeStates = upgradeStates;
+            _upgrade = upgrade;
             _wallet = wallet;
             _closeButton.onClick.AddListener(Hide);
         }
@@ -50,13 +50,13 @@ namespace Presentation
         private void Refresh()
         {
             SetInfo(Weapons.Player,
-                _upgradeStates.PlayerLevelUpInfo.GetNextStats().Type,
+                _upgrade.PlayerLevelUpInfo.GetNextStats().Type,
                 _upgradeIconDictionary[Weapons.Player],
-                _upgradeStates.PlayerLevelUpInfo.GetNextStats().Price,
-                _upgradeStates.PlayerLevelUpInfo.CurrentLevelUp,
-                _upgradeStates.PlayerLevelUpInfo.CountLevelUps);
+                _upgrade.PlayerLevelUpInfo.GetNextStats().Price,
+                _upgrade.PlayerLevelUpInfo.CurrentLevelUp,
+                _upgrade.PlayerLevelUpInfo.CountLevelUps);
 
-            foreach (KeyValuePair<Weapons, LevelUpInfo<WeaponUpgradeDefinition, WeaponStats>> weapon in _upgradeStates.WeaponLevelUpsData)
+            foreach (KeyValuePair<Weapons, LevelUpInfo<WeaponUpgradeDefinition, WeaponStats>> weapon in _upgrade.WeaponLevelUpsData)
             {
                 UpgradeDescription<WeaponStats> description = weapon.Value.GetNextStats();
                 SetInfo(weapon.Key, description.Type, _upgradeIconDictionary[weapon.Key], description.Price, weapon.Value.CurrentLevelUp, weapon.Value.CountLevelUps);
@@ -76,7 +76,7 @@ namespace Presentation
 
         private void OnClick(UpgradeButton upgradeButton)
         {
-            if (!_upgradeStates.TryUpgrade(upgradeButton.Name)) return;
+            if (!_upgrade.TryUpgrade(upgradeButton.Name)) return;
 
             _crystalText.text = _wallet.Crystals.ToString();
             _coinsText.text = _wallet.Coins.ToString();

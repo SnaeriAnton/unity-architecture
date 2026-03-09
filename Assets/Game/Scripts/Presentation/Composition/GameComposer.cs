@@ -67,7 +67,7 @@ namespace Presentation
             
             _enemySpawnerController = new(_player, generatorSettings, _enemyHandler, _factory, _border);
 
-            GameSettings gameSettings = new(_gameConfig.StartWeapons, _gameConfig.StartCoinValues, _gameConfig.StartCrystalValues);
+            GameSettings gameSettings = new(_gameConfig.StartWeapons);
             List<WeaponUpgradeDefinition> weaponLevelUpsData = new();
             Dictionary<Weapons, Sprite> upgradeIconDictionary = new();
             

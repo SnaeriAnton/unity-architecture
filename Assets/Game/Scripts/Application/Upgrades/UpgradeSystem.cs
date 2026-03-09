@@ -1,3 +1,4 @@
+
 using System.Collections.Generic;
 using System.Linq;
 using Domain;
@@ -13,9 +14,6 @@ namespace Application
         private readonly IHUDRefresher _refresher;
         private readonly IWeaponFactory _weaponFactory;
         private readonly IPlayerSession _player;
-
-        public IReadOnlyDictionary<Weapons, LevelUpInfo<WeaponUpgradeDefinition, WeaponStats>> WeaponLevelUpsData => _weaponLevelUpsData;
-        public LevelUpInfo<PlayerUpgradeDefinition, SpartanStats> PlayerLevelUpInfo => _playerLevelUpInfo;
         
         public UpgradeSystem(
             IReadOnlyList<WeaponUpgradeDefinition> weaponLevelUpsData, 
@@ -36,6 +34,8 @@ namespace Application
             _player = player;
         }
         
+        public IReadOnlyDictionary<Weapons, LevelUpInfo<WeaponUpgradeDefinition, WeaponStats>> WeaponLevelUpsData => _weaponLevelUpsData;
+        public LevelUpInfo<PlayerUpgradeDefinition, SpartanStats> PlayerLevelUpInfo => _playerLevelUpInfo;
         public bool IsMaxUpgrades =>
             _playerLevelUpInfo.CurrentLevelUp >= _playerLevelUpInfo.CountLevelUps &&
             _weaponLevelUpsData.Values.All(w => w.CurrentLevelUp >= w.CountLevelUps);

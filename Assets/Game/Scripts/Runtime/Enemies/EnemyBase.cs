@@ -1,3 +1,4 @@
+
 using System;
 using UnityEngine;
 
@@ -5,11 +6,11 @@ namespace Runtime
 {
     public abstract class EnemyBase : MonoBehaviour, IPoolable
     {
-        protected IProjectileSpawner _spawner;
         protected Player _player;
+        protected IProjectileSpawner _spawner;
         protected float _health;
+        
         private Action _onDespawned;
-
         private Action<EnemyBase> _obDiedCallBack;
 
         public int PoolID { get; private set; }

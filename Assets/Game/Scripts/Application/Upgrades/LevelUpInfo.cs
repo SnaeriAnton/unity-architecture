@@ -1,4 +1,5 @@
-﻿namespace Application
+﻿
+namespace Application
 {
     public class LevelUpInfo<TLevelUp, TStats> where TLevelUp : UpgradeDefinition<TStats> where TStats : struct
     {

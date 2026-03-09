@@ -15,9 +15,6 @@ namespace Application
         private int _amountOfExperienceBeforeNextLevelUp;
         private int _currentPlayerLevel;
 
-        public int MaxUpgrade => _amountOfExperienceBeforeNextLevelUp;
-        public int CurrentExperience { get; private set; }
-
         public ProgressionService(Wallet wallet, ProgressSettings settings, IGameTime gameTime, IUIRouter uiRouter, IHUDRefresher refresher, IEnemySpawner spawner, IUpgradeService upgradeService)
         {
             _wallet = wallet;
@@ -29,6 +26,9 @@ namespace Application
             _upgradeService = upgradeService;
             _amountOfExperienceBeforeNextLevelUp = _settings.ExperienceBeforeLevelUp;
         }
+        
+        public int MaxUpgrade => _amountOfExperienceBeforeNextLevelUp;
+        public int CurrentExperience { get; private set; }
 
         public void PickUpCrystal()
         {

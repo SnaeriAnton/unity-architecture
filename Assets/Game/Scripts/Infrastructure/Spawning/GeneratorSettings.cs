@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using Runtime;
@@ -13,8 +14,6 @@ namespace Infrastructure
         public readonly float CoinsChanceOnSpawn;
         public readonly float CrystalsChanceOnSpawn;
         public readonly float RadiusPlayer;
-
-        public IReadOnlyList<GeneratorInfoStage> Stages => _stages;
         
         public GeneratorSettings(IReadOnlyList<GeneratorInfoStage> stages, Coin coinTemplate, Crystal crystalTemplate, float coinsChanceOnSpawn, float crystalsChanceOnSpawn, float radiusPlayer)
         {
@@ -25,6 +24,8 @@ namespace Infrastructure
             CrystalsChanceOnSpawn = crystalsChanceOnSpawn;
             RadiusPlayer = radiusPlayer;
         }
+        
+        public IReadOnlyList<GeneratorInfoStage> Stages => _stages;
     }
 
     [Serializable]
