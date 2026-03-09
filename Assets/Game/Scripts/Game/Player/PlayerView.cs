@@ -35,7 +35,6 @@ namespace Game
         {
             transform.position = Vector3.zero;
             _eyesSpriteRenderer.enabled = true;
-            _playerModel.Restart();
         }
 
         private void Die() => _eyesSpriteRenderer.enabled = false;
