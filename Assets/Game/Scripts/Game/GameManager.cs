@@ -6,24 +6,28 @@ namespace Game
 {
     public class GameManager
     {
-        private readonly Player _player;
+        private readonly PlayerModel _player;
         private readonly EnemySpawnerController _spawnerController;
-        private readonly ProgressionSystem _progressionSystem;
-        private readonly UpgradeSystem _upgradeSystem;
+        private readonly ProgressionController _progressionController;
+        private readonly UpgradeController _upgradeController;
         private readonly Wallet _wallet;
         private readonly PoolManager _poolManager;
         private readonly IInput _input;
         
-        public GameManager(Player player, EnemySpawnerController spawnerController, ProgressionSystem progressionSystem, UpgradeSystem upgradeSystem, Wallet wallet, PoolManager poolManager, IInput input)
+        public GameManager(PlayerModel player, EnemySpawnerController spawnerController, ProgressionController progressionController, UpgradeController upgradeController, Wallet wallet, PoolManager poolManager, IInput input)
         {
             _player = player;
             _spawnerController = spawnerController;
-            _progressionSystem = progressionSystem;
-            _upgradeSystem = upgradeSystem;
+            _progressionController = progressionController;
+            _upgradeController = upgradeController;
             _wallet = wallet;
             _poolManager = poolManager;
             _input = input;
+            
+            _player.OnDied += GameOver;
         }
+
+        public void Dispose() => _player.OnDied -= GameOver;
         
         public void StartGame()
         {
@@ -33,23 +37,23 @@ namespace Game
             UIManager.ShowScreen<HUD>();
         }
 
-        public void GameOver()
-        {
-            _input.SetActivate(false);
-            _spawnerController.Stop();
-            UIManager.ShowScreen<LoseScreen>();
-        }
-
         public void RestartRun()
         {
             _poolManager.Reset();
             _wallet.Reset();
             _player.Restart();    
-            _upgradeSystem.Init();
+            _upgradeController.Init();
             _spawnerController.Reset();
-            _progressionSystem.Reset();
+            _progressionController.Reset();
             UIManager.ResetScreens();
             UIManager.ShowScreen<MenuScreen>();
+        }
+        
+        private void GameOver()
+        {
+            _input.SetActivate(false);
+            _spawnerController.Stop();
+            UIManager.ShowScreen<LoseScreen>();
         }
     }
 }

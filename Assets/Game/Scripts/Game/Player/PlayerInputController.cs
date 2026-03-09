@@ -1,19 +1,29 @@
 using Contracts;
+using UnityEngine;
 
 namespace Game
 {
     public class PlayerInputController
     {
-        private readonly IInput _input;
         private readonly PlayerMovement _movement;
+        private readonly PlayerModel _model;
+        private readonly IInput _input;
 
-        public PlayerInputController(PlayerMovement movement, IInput input)
+        public PlayerInputController(PlayerMovement movement, PlayerModel model, IInput input)
         {
-            _input = input;
             _movement = movement;
+            _model = model;
+            _input = input;
+            
+            _input.OnAxis += HandleAxisInput;
         }
+        
+        public void Dispose() => _input.OnAxis -= HandleAxisInput;
 
-        public void Enable()  => _input.OnAxis += _movement.OnAxis;
-        public void Disable() => _input.OnAxis -= _movement.OnAxis;
+        private void HandleAxisInput(Vector2 axis)
+        {
+            if (_model.IsDead) return;
+            _movement.OnAxis(axis);
+        }
     }
 }

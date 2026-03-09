@@ -1,4 +1,5 @@
 using System;
+using Contracts;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Core.Pool;
@@ -8,25 +9,25 @@ namespace Game
     public class Factory
     {
         private readonly PoolManager _poolManager;
-        private readonly Player _player;
+        private readonly ITarget _player;
 
-        public Factory(PoolManager poolManager, Player player)
+        public Factory(PoolManager poolManager, ITarget player)
         {
             _poolManager = poolManager;
             _player = player;
         }
 
-        public Weapon CreateWeapon(Weapon template, Transform parent)
+        public WeaponView CreateWeapon(WeaponView template)
         {
-            Weapon weapon = Object.Instantiate(template, parent);
-            weapon.Construct(_poolManager);
-            return weapon;
+            WeaponView weaponView = Object.Instantiate(template, _player.Transform);
+            weaponView.Construct(_poolManager);
+            return weaponView;
         }
 
-        public EnemyBase SpawnEnemy(EnemyBase prefab, Action<EnemyBase> onDied, Vector3 pos)
+        public EnemyView SpawnEnemy(EnemyData data, Action<EnemyView> onDied, Vector3 pos)
         {
-            EnemyBase enemy = _poolManager.Spawn(prefab, pos, Quaternion.identity);
-            enemy.Construct(_player, onDied, _poolManager);
+            EnemyView enemy = _poolManager.Spawn(data.EnemyTemplate, pos, Quaternion.identity);
+            enemy.Construct(onDied, _poolManager);
             return enemy;
         }
     }

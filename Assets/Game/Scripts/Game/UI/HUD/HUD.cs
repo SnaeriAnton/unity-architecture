@@ -6,48 +6,73 @@ namespace Game
     {
         [SerializeField] private HealthPanel _healthPanel;
         [SerializeField] private CoinsView _coinsView;
-        [SerializeField] private ShieldView _shieldView;
+        [SerializeField] private ShieldViewValues _shieldViewValues;
         [SerializeField] private ProgressBarView _progressBarView;
 
-        private ProgressionSystem _progressionSystem;
-        private Wallet _wallet;
-        private Player _player;
+        private IProgressionReadModel _progressionModel;
+        private IWallet _wallet;
+        private IPlayerReadModel _player;
+        private IShieldReadModel _shield;
+        private IUpgrade _upgrade;
 
-        public void Construct(Player player, Wallet wallet, ProgressionSystem progressionSystem)
+        public void Construct(IPlayerReadModel playerModel, IShieldReadModel shield, IWallet wallet, IProgressionReadModel progressionModel, IUpgrade upgrade)
         {
-            _progressionSystem = progressionSystem;
-            _player = player;
+            _progressionModel = progressionModel;
+            _player = playerModel;
             _wallet = wallet;
+            _shield = shield;
+            _upgrade = upgrade;
+
+            _wallet.OnChanged += UpdateValues;
+            _player.OnHealthChanged += UpdateHealthValues;
+            _shield.OnShieldStateChanged += UpdateShieldValues;
+            _progressionModel.OnProgressChanged += UpdateProgress;
+            _upgrade.OnUpgraded += UpdateValues;
+            _upgrade.OnUpgraded += UpdateHealth; 
+            _upgrade.OnUpgraded += UpdateShieldValues;
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            _wallet.OnChanged -= UpdateValues;
+            _player.OnHealthChanged -= UpdateHealthValues;
+            _shield.OnShieldStateChanged -= UpdateShieldValues;
+            _progressionModel.OnProgressChanged -= UpdateProgress;
+            _upgrade.OnUpgraded -= UpdateValues;
+            _upgrade.OnUpgraded -= UpdateHealth;
+            _upgrade.OnUpgraded -= UpdateShieldValues;
         }
 
         public override void Show()
         {
             base.Show();
             UpdateHealth();
-            Refresh();
-        }
-
-        public void Refresh()
-        {
-            if (!gameObject.activeSelf) return;
-            _progressBarView.UpdateProgressbar(_progressionSystem.CurrentExperience, _progressionSystem.MaxUpgrade);
-            _healthPanel.ChangeHealth(_player.CurrentHealth);
-            _coinsView.ShowCoinsText(_wallet.Coins);
-
-            if (_player.Shield) _shieldView.UpdateCoolDown(_player.Shield.CurrentCoolDownCount, _player.Shield.CoolDown);
+            UpdateHealthValues();
+            UpdateValues();
         }
 
         public override void Reset()
         {
-            _shieldView.Deactivate();
-            Refresh();
+            UpdateProgress();
+            _shieldViewValues.Deactivate();
             _healthPanel.Reset();
         }
 
+        private void UpdateHealthValues() => _healthPanel.ChangeHealth(_player.CurrentHealth);
+        private void UpdateValues() => _coinsView.ShowCoinsText(_wallet.Coins);
+        private void UpdateProgress() => _progressBarView.UpdateProgressbar(_progressionModel.CurrentExperience, _progressionModel.MaxUpgrade);
+
+        private void UpdateShieldValues()
+        {
+            if (_shield.Shield != null)
+                _shieldViewValues.UpdateCoolDown(_shield.Shield.CurrentCoolDownCount, _shield.Shield.CoolDown);
+        }
+        
         private void UpdateHealth()
         {
             _healthPanel.UpdateHealth(_player.MaxHealth);
-            _shieldView.transform.SetAsLastSibling();
+            _shieldViewValues.transform.SetAsLastSibling();
         }
     }
 }

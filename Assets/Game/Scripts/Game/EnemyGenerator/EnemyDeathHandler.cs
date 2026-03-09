@@ -5,18 +5,18 @@ namespace Game
 {
     public class EnemyDeathHandler
     {
-        private readonly Player _player;
+        private readonly PlayerModel _player;
         private readonly PoolManager _pool;
         private readonly GeneratorData _data;
         
-        public EnemyDeathHandler(Player player, PoolManager pool, GeneratorData data)
+        public EnemyDeathHandler(PlayerModel player, PoolManager pool, GeneratorData data)
         {
             _player = player;
             _pool = pool;
             _data = data;
         }
         
-        public void Handle(EnemyBase enemy)
+        public void Handle(EnemyView enemy)
         {
             _player.KillEnemy();
 

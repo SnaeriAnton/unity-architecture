@@ -16,18 +16,20 @@ namespace Game
         [SerializeField] private RectTransform _buttonsContainer;
 
         private readonly Dictionary<Weapons, UpgradeButton> _upgradeButtonsDictionary = new();
-        private ProgressionSystem _progression;
-        private UpgradeSystem _upgradeStates;
-        private Wallet _wallet;
+        private IProgression _progression;
+        private IWallet _wallet;
+        private IUpgrade _upgrade;
+        private IUpgradeReadModel _upgradeModel;
 
-        public void Construct(ProgressionSystem progression, UpgradeSystem upgradeStates, Wallet wallet)
+        public void Construct(IProgression progression, IUpgrade upgrade, IUpgradeReadModel upgradeModel, IWallet wallet)
         {
             _progression = progression;
-            _upgradeStates = upgradeStates;
+            _upgrade = upgrade;
+            _upgradeModel = upgradeModel;
             _wallet = wallet;
             _closeButton.onClick.AddListener(Hide);
         }
-        
+
         public override void Show()
         {
             base.Show();
@@ -45,14 +47,14 @@ namespace Game
 
         private void Refresh()
         {
-            SetInfo(Weapons.Player, 
-                _upgradeStates.PlayerLevelUpInfo.GetNextStats().Type, 
-                _upgradeStates.PlayerLevelUpInfo.LevelUpData.Icon, 
-                _upgradeStates.PlayerLevelUpInfo.GetNextStats().Price, 
-                _upgradeStates.PlayerLevelUpInfo.CurrentLevelUp, 
-                _upgradeStates.PlayerLevelUpInfo.CountLevelUps);
-            
-            foreach (KeyValuePair<Weapons, LevelUpInfo<WeaponLevelUpsData, WeaponStats>> weapon in _upgradeStates.WeaponLevelUpsData)
+            SetInfo(Weapons.Player,
+                _upgradeModel.PlayerLevelUpInfo.GetNextStats().Type,
+                _upgradeModel.PlayerLevelUpInfo.LevelUpData.Icon,
+                _upgradeModel.PlayerLevelUpInfo.GetNextStats().Price,
+                _upgradeModel.PlayerLevelUpInfo.CurrentLevelUp,
+                _upgradeModel.PlayerLevelUpInfo.CountLevelUps);
+
+            foreach (KeyValuePair<Weapons, LevelUpInfo<WeaponLevelUpsData, WeaponStats>> weapon in _upgradeModel.WeaponLevelUpsData)
             {
                 LevelUpDescription<WeaponStats> description = weapon.Value.GetNextStats();
                 SetInfo(weapon.Key, description.Type, weapon.Value.LevelUpData.Icon, description.Price, weapon.Value.CurrentLevelUp, weapon.Value.CountLevelUps);
@@ -66,14 +68,14 @@ namespace Game
                 _upgradeButtonsDictionary[name] = Instantiate(_upgradeButtonTemplate, _buttonsContainer);
                 _upgradeButtonsDictionary[name].Construct(OnClick, _typeOfCurrency, icon, name);
             }
-            
+
             _upgradeButtonsDictionary[name].UpdateValues(currencyType, price, currentLevel, maxLevels);
         }
 
         private void OnClick(UpgradeButton upgradeButton)
         {
-            if (!_upgradeStates.TryUpgrade(upgradeButton.Name)) return;
-            
+            if (!_upgrade.TryUpgrade(upgradeButton.Name)) return;
+
             _crystalText.text = _wallet.Crystals.ToString();
             _coinsText.text = _wallet.Coins.ToString();
             Refresh();

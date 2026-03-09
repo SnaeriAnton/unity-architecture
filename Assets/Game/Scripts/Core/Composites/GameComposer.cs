@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Contracts;
 using Core.InputSystem;
 using Core.Pool;
 using Core.UI;
 using Game;
+using UnityEditor;
 
 namespace Core
 {
@@ -14,24 +16,27 @@ namespace Core
         [SerializeField] private List<WeaponLevelUpsData> _weaponLevelUpsData;
         [SerializeField] private PlayerLevelUpsData _playerLevelUpsData;
         [SerializeField] private UIRoot _uiRoot;
-        [SerializeField] private Player _player;
+        [SerializeField] private PlayerView _playerView;
         [SerializeField] private Border _border;
         [SerializeField] private GeneratorData _generatorData;
         [SerializeField] private ProgressConfig _config;
         [SerializeField] private GameConfig _gameConfig;
         [SerializeField] private InputRoot _inputRoot;
+        [SerializeField] private PlayerStats _playerStats;
 
-        private EnemySpawnerController _enemySpawnerController;
-        private ProgressionSystem _progressionSystem;
-        private UpgradeSystem _upgradeSystem;
-        private GameManager _gameManager;
+        private PlayerController _playerController;
+        private PlayerModel _playerModel;
         private Wallet _wallet;
-        private Factory _factory;
         private PoolManager _poolManager;
+        private EnemySpawnerController _enemySpawnerController;
+        private ProgressionController _progressionController;
+        private UpgradeController _upgradeController;
+        private GameManager _gameManager;
+        private Factory _factory;
         private EnemyDeathHandler _enemyHandler;
 
         private bool IsMobile => Application.isMobilePlatform;
-        
+
         public void StartGame()
         {
             Compose();
@@ -40,30 +45,49 @@ namespace Core
 
         private void Update() => _tickables.ForEach(t => t.Tick());
         private void OnDestroy() => Dispose();
-        private void Dispose() { }
+
+        private void Dispose()
+        {
+            _playerView.OnTouchedCoin -= AddCoin;
+            _uiRoot.Dispose();
+            _gameManager.Dispose();
+            _progressionController.Dispose();
+            _playerController.Dispose();
+            _playerView.Dispose();
+            _playerModel.Dispose();
+        }
 
         private void Compose()
         {
             _inputRoot.Construct(IsMobile);
             _poolManager = new();
             _wallet = new(_gameConfig.StartCoinValues, _gameConfig.StartCrystalValues);
-            _factory = new(_poolManager, _player);
-            _enemyHandler = new(_player, _poolManager, _generatorData);
-            _enemySpawnerController = new(_player, _generatorData, _enemyHandler, _factory, _border);
-            _upgradeSystem = new(_weaponLevelUpsData, _playerLevelUpsData, _factory, _player, _gameConfig, _wallet);
-            
-            _progressionSystem = new(_upgradeSystem, _enemySpawnerController, _wallet, _config);
-            _gameManager = new(_player, _enemySpawnerController, _progressionSystem, _upgradeSystem, _wallet, _poolManager, _inputRoot.Input);
-            _player.Construct(_wallet, _progressionSystem.PickUpCrystal, _gameManager.GameOver, _border, _inputRoot.Input);
-            _uiRoot.Construct(_progressionSystem, _upgradeSystem, _wallet, _gameManager, _player);
+            _playerModel = new(_playerStats.IFramesDuration);
+            _playerView.Construct(_playerModel);
+            _playerController = new(_playerView.transform, _playerModel, _border, _inputRoot.Input, _playerStats.Speed);
+            _factory = new(_poolManager, _playerView);
+            _enemyHandler = new(_playerModel, _poolManager, _generatorData);
+            _enemySpawnerController = new(_playerView, _generatorData, _enemyHandler, _factory, _border);
+            _upgradeController = new(_weaponLevelUpsData, _playerLevelUpsData, _factory, _playerModel, _gameConfig, _wallet);
+            _progressionController = new(_playerView, _upgradeController, _enemySpawnerController, _wallet, _config);
+            _gameManager = new(_playerModel, _enemySpawnerController, _progressionController, _upgradeController, _wallet, _poolManager, _inputRoot.Input);
+            _uiRoot.Construct(_progressionController.Model, _playerModel, _wallet, _gameManager, _playerModel, _upgradeController.Model, _upgradeController, _progressionController);
 
             _tickables.Add(_enemySpawnerController);
+            _tickables.Add(_playerModel);
         }
 
         private void Initialization()
         {
-            _upgradeSystem.Init();
+            _playerView.OnTouchedCoin += AddCoin;
+            _upgradeController.Init();
             UIManager.ShowScreen<MenuScreen>();
+        }
+
+        private void AddCoin(Coin coin)
+        {
+            coin.PickUp();
+            _wallet.AddCoin();
         }
     }
 }

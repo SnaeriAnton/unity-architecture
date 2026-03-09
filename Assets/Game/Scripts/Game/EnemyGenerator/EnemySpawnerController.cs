@@ -1,12 +1,13 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Contracts;
 
 namespace Game
 {
     public class EnemySpawnerController : ITickable
     {
+        private readonly ITarget _player;
         private readonly GeneratorData _data;
-        private readonly Player _player;
         private readonly Border _border;
         private readonly Factory _factory;
         private readonly EnemyDeathHandler _handler;
@@ -16,7 +17,7 @@ namespace Game
         private int _currentStageIndex;
         private float _spawnTimer;
 
-        public EnemySpawnerController(Player player, GeneratorData data, EnemyDeathHandler handler, Factory factory, Border border)
+        public EnemySpawnerController(ITarget player, GeneratorData data, EnemyDeathHandler handler, Factory factory, Border border)
         {
             _player = player;
             _data = data;
@@ -42,7 +43,32 @@ namespace Game
             if (_spawnTimer < _currentStage.SpawnInterval) return;
 
             _spawnTimer = 0f;
-            _factory.SpawnEnemy(_currentStage.Enemies[Random.Range(0, _currentStage.Enemies.Count)], _handler.Handle, _border.PickPoint(_player.transform.position, _data.RadiusPlayer));
+            EnemyData data = _currentStage.Enemies[Random.Range(0, _currentStage.Enemies.Count)];
+            EnemyView view = _factory.SpawnEnemy(data, _handler.Handle, _border.PickPoint(_player.Transform.position, _data.RadiusPlayer));
+            
+            EnemyController controller = null;
+
+            switch (view)
+            {
+                case SamuraiView:
+                    SamuraiModel samuraiModel = new(data.Stats, _player);
+                    controller = new SamuraiController(samuraiModel, (SamuraiView)view);
+                    view.Init(samuraiModel);
+                    break;
+
+                case VikingView:
+                    VikingModel vikingModel = new(data.Stats, _player);
+                    controller = new VikingController(vikingModel, (VikingView)view);
+                    view.Init(vikingModel);
+                    break;
+                        
+                case KnightView:
+                    KnightModel knightModel = new(data.Stats, _player);
+                    controller = new KnightController(knightModel, (KnightView)view);
+                    view.Init(knightModel);
+                    break;
+            }
+
         }
 
         public void Reset()

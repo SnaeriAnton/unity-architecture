@@ -9,71 +9,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d2ef921ab0a31841b3a66ff62b338ee, type: 3}
+  m_Script: {fileID: 11500000, guid: 3874db38b1605854599deee008d7dda0, type: 3}
   m_Name: PlayerLevelUpsData
   m_EditorClassIdentifier: My::My.PlayerStates
-  _spartanStateLevelUps:
-  - _levelUps:
-    - <Type>k__BackingField: 0
-      <Price>k__BackingField: 0
-      <Stats>k__BackingField:
-        Health: 0
-    - <Type>k__BackingField: 0
-      <Price>k__BackingField: 0
-      <Stats>k__BackingField:
-        Health: 0
-    - <Type>k__BackingField: 0
-      <Price>k__BackingField: 0
-      <Stats>k__BackingField:
-        Health: 0
-    - <Type>k__BackingField: 0
-      <Price>k__BackingField: 0
-      <Stats>k__BackingField:
-        Health: 0
-    - <Type>k__BackingField: 0
-      <Price>k__BackingField: 0
-      <Stats>k__BackingField:
-        Health: 0
-    <WeaponTemplate>k__BackingField: {fileID: 0}
-    <WeaponIcon>k__BackingField: {fileID: 0}
-    <WeaponID>k__BackingField: 
-  - _levelUps: []
-    <WeaponTemplate>k__BackingField: {fileID: 0}
-    <WeaponIcon>k__BackingField: {fileID: 0}
-    <WeaponID>k__BackingField: 
-  - _levelUps: []
-    <WeaponTemplate>k__BackingField: {fileID: 0}
-    <WeaponIcon>k__BackingField: {fileID: 0}
-    <WeaponID>k__BackingField: 
-  - _levelUps: []
-    <WeaponTemplate>k__BackingField: {fileID: 0}
-    <WeaponIcon>k__BackingField: {fileID: 0}
-    <WeaponID>k__BackingField: 
-  - _levelUps: []
-    <WeaponTemplate>k__BackingField: {fileID: 0}
-    <WeaponIcon>k__BackingField: {fileID: 0}
-    <WeaponID>k__BackingField: 
-  - _levelUps: []
-    <WeaponTemplate>k__BackingField: {fileID: 0}
-    <WeaponIcon>k__BackingField: {fileID: 0}
-    <WeaponID>k__BackingField: 
-  _shieldStateLevelUps:
-    _levelUps: []
-    <WeaponTemplate>k__BackingField: {fileID: 0}
-    <WeaponIcon>k__BackingField: {fileID: 0}
-    <WeaponID>k__BackingField: 
-  _swordStateLevelUps:
-    _levelUps: []
-    <WeaponTemplate>k__BackingField: {fileID: 0}
-    <WeaponIcon>k__BackingField: {fileID: 0}
-    <WeaponID>k__BackingField: 
-  _spearStateLevelUps:
-    _levelUps: []
-    <WeaponTemplate>k__BackingField: {fileID: 0}
-    <WeaponIcon>k__BackingField: {fileID: 0}
-    <WeaponID>k__BackingField: 
-  _arrowStateLevelUps:
-    _levelUps: []
-    <WeaponTemplate>k__BackingField: {fileID: 0}
-    <WeaponIcon>k__BackingField: {fileID: 0}
-    <WeaponID>k__BackingField: 
+  <Icon>k__BackingField: {fileID: -364613973, guid: 2a862facc91f5bd40bfdcb196b202f8c, type: 3}
+  <Name>k__BackingField: 0
+  _levelUps:
+  - <Type>k__BackingField: 0
+    <Price>k__BackingField: 0
+    <Stats>k__BackingField:
+      Health: 1
+  - <Type>k__BackingField: 2
+    <Price>k__BackingField: 2
+    <Stats>k__BackingField:
+      Health: 2
+  - <Type>k__BackingField: 2
+    <Price>k__BackingField: 2
+    <Stats>k__BackingField:
+      Health: 3
+  - <Type>k__BackingField: 2
+    <Price>k__BackingField: 2
+    <Stats>k__BackingField:
+      Health: 4
+  - <Type>k__BackingField: 2
+    <Price>k__BackingField: 2
+    <Stats>k__BackingField:
+      Health: 5
