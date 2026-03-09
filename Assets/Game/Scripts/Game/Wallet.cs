@@ -2,14 +2,14 @@ namespace Game
 {
     public class Wallet
     {
-        public int Coins { get; private set; }
-        public int Crystals { get; private set; }
-
         public Wallet(int coins, int crystals)
         {
             Coins = coins;
             Crystals = crystals;
         }
+        
+        public int Coins { get; private set; }
+        public int Crystals { get; private set; }
 
         public void AddCoin() => Coins++;
         public void AddCrystal() => Crystals++;

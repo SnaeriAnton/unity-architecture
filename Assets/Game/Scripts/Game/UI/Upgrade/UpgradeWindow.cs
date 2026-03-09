@@ -17,13 +17,13 @@ namespace Game
 
         private readonly Dictionary<Weapons, UpgradeButton> _upgradeButtonsDictionary = new();
         private ProgressionSystem _progression;
-        private UpgradeSystem _upgradeStates;
+        private UpgradeSystem _upgrade;
         private Wallet _wallet;
 
-        public void Construct(ProgressionSystem progression, UpgradeSystem upgradeStates, Wallet wallet)
+        public void Construct(ProgressionSystem progression, UpgradeSystem upgrade, Wallet wallet)
         {
             _progression = progression;
-            _upgradeStates = upgradeStates;
+            _upgrade = upgrade;
             _wallet = wallet;
             _closeButton.onClick.AddListener(Hide);
         }
@@ -46,13 +46,13 @@ namespace Game
         private void Refresh()
         {
             SetInfo(Weapons.Player, 
-                _upgradeStates.PlayerLevelUpInfo.GetNextStats().Type, 
-                _upgradeStates.PlayerLevelUpInfo.LevelUpData.Icon, 
-                _upgradeStates.PlayerLevelUpInfo.GetNextStats().Price, 
-                _upgradeStates.PlayerLevelUpInfo.CurrentLevelUp, 
-                _upgradeStates.PlayerLevelUpInfo.CountLevelUps);
+                _upgrade.PlayerLevelUpInfo.GetNextStats().Type, 
+                _upgrade.PlayerLevelUpInfo.LevelUpData.Icon, 
+                _upgrade.PlayerLevelUpInfo.GetNextStats().Price, 
+                _upgrade.PlayerLevelUpInfo.CurrentLevelUp, 
+                _upgrade.PlayerLevelUpInfo.CountLevelUps);
             
-            foreach (KeyValuePair<Weapons, LevelUpInfo<WeaponLevelUpsData, WeaponStats>> weapon in _upgradeStates.WeaponLevelUpsData)
+            foreach (KeyValuePair<Weapons, LevelUpInfo<WeaponLevelUpsData, WeaponStats>> weapon in _upgrade.WeaponLevelUpsData)
             {
                 LevelUpDescription<WeaponStats> description = weapon.Value.GetNextStats();
                 SetInfo(weapon.Key, description.Type, weapon.Value.LevelUpData.Icon, description.Price, weapon.Value.CurrentLevelUp, weapon.Value.CountLevelUps);
@@ -72,7 +72,7 @@ namespace Game
 
         private void OnClick(UpgradeButton upgradeButton)
         {
-            if (!_upgradeStates.TryUpgrade(upgradeButton.Name)) return;
+            if (!_upgrade.TryUpgrade(upgradeButton.Name)) return;
             
             _crystalText.text = _wallet.Crystals.ToString();
             _coinsText.text = _wallet.Coins.ToString();

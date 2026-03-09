@@ -1,3 +1,4 @@
+
 using System.Collections.Generic;
 using System.Linq;
 using ExtensionSystems;
@@ -14,9 +15,6 @@ namespace Game
         private readonly Player _player;
         private readonly Wallet _wallet;
 
-        public IReadOnlyDictionary<Weapons, LevelUpInfo<WeaponLevelUpsData, WeaponStats>> WeaponLevelUpsData => _weaponLevelUpsData;
-        public LevelUpInfo<PlayerLevelUpsData, SpartanStats> PlayerLevelUpInfo => _playerLevelUpInfo;
-        
         public UpgradeSystem(IReadOnlyList<WeaponLevelUpsData> weaponLevelUpsData, PlayerLevelUpsData playerLevelUpsData, Factory factory, Player player, GameConfig gameConfig, Wallet wallet)
         {
             weaponLevelUpsData.ForEach(d => _weaponLevelUpsData.Add(d.Name, new(d)));
@@ -27,6 +25,8 @@ namespace Game
             _wallet = wallet;
         }
         
+        public IReadOnlyDictionary<Weapons, LevelUpInfo<WeaponLevelUpsData, WeaponStats>> WeaponLevelUpsData => _weaponLevelUpsData;
+        public LevelUpInfo<PlayerLevelUpsData, SpartanStats> PlayerLevelUpInfo => _playerLevelUpInfo;
         public bool IsMaxUpgrades =>
             _playerLevelUpInfo.CurrentLevelUp >= _playerLevelUpInfo.CountLevelUps &&
             _weaponLevelUpsData.Values.All(w => w.CurrentLevelUp >= w.CountLevelUps);

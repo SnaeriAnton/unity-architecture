@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using Contracts;
@@ -12,7 +13,7 @@ namespace Game
         [SerializeField] private PlayerStats _stats;
 
         private WeaponSystem _weapon;
-        private Action<Crystal> _onCrystalCallback;
+        private Action _onCrystalCallback;
         private Action _onDiedCallback;
         private PlayerInputController _inputController;
         private PlayerMovement _movement;
@@ -39,7 +40,7 @@ namespace Game
                 _invulnTimer -= Time.deltaTime;
         }
 
-        public void Construct(Wallet wallet, Action<Crystal> onCrystalCallback, Action onDiedCallback, Border border, IInput input)
+        public void Construct(Wallet wallet, Action onCrystalCallback, Action onDiedCallback, Border border, IInput input)
         {
             _wallet = wallet;
             _onCrystalCallback = onCrystalCallback;
@@ -120,7 +121,10 @@ namespace Game
             }
 
             if (other.TryGetComponent(out Crystal crystal))
-                _onCrystalCallback.Invoke(crystal);
+            {
+                crystal.PickUp();   
+                _onCrystalCallback.Invoke();
+            }
         }
     }
 }

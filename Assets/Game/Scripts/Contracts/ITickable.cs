@@ -1,6 +1,4 @@
-using UnityEngine;
-
-namespace Game
+namespace Contracts
 {
     public interface ITickable
     {

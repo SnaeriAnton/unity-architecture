@@ -9,11 +9,12 @@ namespace Game
         protected PoolManager _poolManager;
         protected Player _player;
         protected float _health;
+        
         private Action _onDespawned;
-
-        private Action<EnemyBase> _obDiedCallBack;
-
+        
         public int PoolID { get; private set; }
+        
+        private Action<EnemyBase> _obDiedCallBack;
 
         public virtual void Construct(Player player, Action<EnemyBase> obDiedCallBack, PoolManager poolManager)
         {
