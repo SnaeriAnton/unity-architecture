@@ -2,8 +2,8 @@ namespace Runtime
 {
     public class PlayerInputController
     {
-        private readonly IRuntimeInput _input;
         private readonly PlayerMovement _movement;
+        private readonly IRuntimeInput _input;
 
         public PlayerInputController(PlayerMovement movement, IRuntimeInput input)
         {
