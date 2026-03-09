@@ -12,9 +12,7 @@ namespace Progression
         private int _amountOfExperienceBeforeNextLevelUp;
         private int _currentPlayerLevel;
         private int _currentExperience;
-
-        private int MaxUpgrade => _amountOfExperienceBeforeNextLevelUp;
-
+        
         public ProgressionSystem( ProgressConfig config, IUpgrade upgrade, IEnemySpawner enemySpawner, IWallet wallet)
         {
             _upgrade = upgrade;
@@ -25,6 +23,8 @@ namespace Progression
             GameEvents.Progression.UpgradeCompleted += UpgradeStats;
             GameEvents.Loot.CrystalPicked += PickUpCrystal;
         }
+        
+        private int MaxUpgrade => _amountOfExperienceBeforeNextLevelUp;
 
         public void Dispose()
         {

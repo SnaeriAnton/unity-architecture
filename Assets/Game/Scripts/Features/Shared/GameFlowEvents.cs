@@ -2,13 +2,6 @@ using System;
 
 namespace Shared
 {
-    public enum GameScreen
-    {
-        Menu,
-        Hud,
-        Lose
-    }
-
     public class GameFlowEvents
     {
         public event Action<GameScreen> ScreenRequested;

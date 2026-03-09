@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,12 +12,5 @@ namespace Enemies
         [field: SerializeField] public float CrystalsChanceOnSpawn { get; private set; } = 0.1f;
         [field: SerializeField] public float RadiusPlayer { get; private set; } = 3f;
         public IReadOnlyList<GeneratorStage> Stages => _stages;
-    }
-
-    [Serializable]
-    public struct GeneratorStage
-    {
-        public List<EnemyBase> Enemies;
-        public float SpawnInterval;
     }
 }

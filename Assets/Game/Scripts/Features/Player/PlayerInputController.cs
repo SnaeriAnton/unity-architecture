@@ -4,8 +4,8 @@ namespace Player
 {
     public class PlayerInputController
     {
-        private readonly IInput _input;
         private readonly PlayerMovement _movement;
+        private readonly IInput _input;
 
         public PlayerInputController(PlayerMovement movement, IInput input)
         {
