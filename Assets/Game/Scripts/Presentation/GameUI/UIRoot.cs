@@ -23,7 +23,6 @@ namespace Presentation
         public HUD HUD => _hud;
 
         public void Construct(
-            IReadOnlyDictionary<int, Sprite> upgradeIconDictionary,
             IReadOnlyDictionary<int, Sprite> currencyOfTypes,
             ProgressionService progression,
             UpgradeSystem upgradeStates,
@@ -37,7 +36,7 @@ namespace Presentation
             _progression = progression;
             _loseScreen.Construct(game);
             _menuScreen.Construct(game);
-            _upgradeWindow.Construct(upgradeIconDictionary, currencyOfTypes, progression, upgradeStates, wallet);
+            _upgradeWindow.Construct(currencyOfTypes, progression, upgradeStates, wallet);
             _hud.Construct(player, wallet, progression, handler, upgradeStates);
             
             _screens[typeof(HUD)] = _hud;

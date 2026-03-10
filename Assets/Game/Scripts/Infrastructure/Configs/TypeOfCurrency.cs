@@ -25,11 +25,4 @@ namespace Infrastructure
             return sprites;
         }
     }
-
-    [Serializable]
-    public class CurrencyDescription
-    {
-        [field: SerializeField] public Sprite Icon { get; private set; }
-        [field: SerializeField] public CurrencyType Type { get; private set; }
-    }
 }

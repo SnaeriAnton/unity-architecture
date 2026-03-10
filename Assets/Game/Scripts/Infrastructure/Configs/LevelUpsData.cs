@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Domain;
@@ -16,13 +15,5 @@ namespace Infrastructure
         public int Count => _levelUps.Count;
 
         public (int, Sprite) GetDescription() => ((int)Name, Icon);
-    }
-    
-    [Serializable]
-    public class LevelUpDescription<TStats> where TStats : struct
-    {
-        [field: SerializeField] public CurrencyType Type { get; private set; }
-        [field: SerializeField] public int Price { get; private set; }
-        [field: SerializeField] public TStats Stats { get; private set; }
     }
 }

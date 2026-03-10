@@ -1,3 +1,4 @@
+
 using System;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace Infrastructure
         protected PoolManager _spawner;
         protected Player _player;
         protected float _health;
+        
         private Action _onDespawned;
 
         private Action<EnemyBase> _obDiedCallBack;

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,12 +15,5 @@ namespace Infrastructure
         [field: SerializeField] public float RadiusPlayer { get; private set; } = 3f;
         
         public IReadOnlyList<GeneratorStage> Stages => _stages;
-    }
-
-    [Serializable]
-    public struct GeneratorStage
-    {
-        public List<EnemyBase> Enemies;
-        public float SpawnInterval;
     }
 }

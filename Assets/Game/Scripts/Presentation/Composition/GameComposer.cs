@@ -47,7 +47,7 @@ namespace Presentation
             ProgressSettings progressSettings = new(_config.ExperienceMultiplier, _config.LevelUpStageStep, _config.ExperienceBeforeLevelUp);
             _gameFactory = new(_weaponLevelUpsData, _playerLevelUpsData, _factory, progressSettings, _player, _gameConfig, _gameTime, _border, _poolManager, _generatorData, _inputRoot.Input, _gameConfig.StartCoinValues, _gameConfig.StartCrystalValues);
             _player.Construct(_gameFactory.WalletService.AddCoin, _gameFactory.Progression.PickUpCrystal, _gameFactory.Game.GameOver, _uiRoot.HUD.Refresh, _border, _inputRoot.Input, _stats.IFramesDuration, _stats.Speed);
-            _uiRoot.Construct(_gameFactory.UpgradeIconDictionary, _typeOfCurrency.GetSprites(), _gameFactory.Progression, _gameFactory.UpgradeSystem, _gameFactory.WalletService, _gameFactory.Game, _player, _gameFactory.EnemyHandler);
+            _uiRoot.Construct(_typeOfCurrency.GetSprites(), _gameFactory.Progression, _gameFactory.UpgradeSystem, _gameFactory.WalletService, _gameFactory.Game, _player, _gameFactory.EnemyHandler);
 
             _tickables.Add(_gameFactory.EnemySpawnerController);
         }

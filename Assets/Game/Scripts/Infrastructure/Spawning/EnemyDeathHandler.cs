@@ -10,14 +10,14 @@ namespace Infrastructure
         private readonly PoolManager _pool;
         private readonly GeneratorData _generatorData;
         
-        public event Action OnEnemyDied;
-        
         public EnemyDeathHandler(Player player, PoolManager pool, GeneratorData generatorData)
         {
             _player = player;
             _pool = pool;
             _generatorData = generatorData;
         }
+        
+        public event Action OnEnemyDied;
         
         public void Handle(EnemyBase enemy)
         {

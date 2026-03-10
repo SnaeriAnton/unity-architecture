@@ -13,12 +13,12 @@ namespace Application
 
         private int _amountOfExperienceBeforeNextLevelUp;
         private int _currentPlayerLevel;
-
-        public event Action OnProgression;
-        public event Action OnReachedGoal;
         
         public int MaxUpgrade => _amountOfExperienceBeforeNextLevelUp;
         public int CurrentExperience { get; private set; }
+        
+        public event Action OnProgression;
+        public event Action OnReachedGoal;
 
         public ProgressionService(WalletService wallet, ProgressSettings settings, GameTime gameTime, EnemySpawnerController spawner, UpgradeSystem upgradeService)
         {

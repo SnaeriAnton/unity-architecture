@@ -16,29 +16,27 @@ namespace Presentation
 
         private readonly Dictionary<int, UpgradeButton> _upgradeButtonsDictionary = new();
 
-        private Dictionary<int, Sprite> _upgradeIconDictionary;
         private Dictionary<int, Sprite> _currencyOfTypes;
         private ProgressionService _progression;
-        private UpgradeSystem _upgradeStates;
+        private UpgradeSystem _upgrade;
         private WalletService _wallet;
 
-        public void Construct(IReadOnlyDictionary<int, Sprite> upgradeIconDictionary, IReadOnlyDictionary<int, Sprite> currencyOfTypes, ProgressionService progression, UpgradeSystem upgradeStates, WalletService wallet)
+        public void Construct(IReadOnlyDictionary<int, Sprite> currencyOfTypes, ProgressionService progression, UpgradeSystem upgrade, WalletService wallet)
         {
-            _upgradeIconDictionary = new(upgradeIconDictionary);
             _currencyOfTypes = new(currencyOfTypes);
             _progression = progression;
-            _upgradeStates = upgradeStates;
+            _upgrade = upgrade;
             _wallet = wallet;
             _closeButton.onClick.AddListener(Hide);
 
-            _upgradeStates.OnUpgrade += Refresh;
+            _upgrade.OnUpgrade += Refresh;
             _wallet.OnWalletChanged += ShowValues;
         }
 
         public override void Dispose()
         {
             base.Dispose();
-            _upgradeStates.OnUpgrade -= Refresh;
+            _upgrade.OnUpgrade -= Refresh;
             _wallet.OnWalletChanged -= ShowValues;
         }
 
@@ -57,7 +55,7 @@ namespace Presentation
 
         private void Refresh()
         {
-            List<UpgradeInfo> upgradeInfo = new(_upgradeStates.GetUpgradeInfo());
+            List<UpgradeInfo> upgradeInfo = new(_upgrade.GetUpgradeInfo());
 
             foreach (UpgradeInfo weapon in upgradeInfo)
                 SetInfo(weapon.NameID, weapon.CurrencyID, weapon.Icon, weapon.Price, weapon.CurrentLevel, weapon.MaxLevels);
@@ -74,12 +72,7 @@ namespace Presentation
             _upgradeButtonsDictionary[nameID].UpdateValues(currencyID, price, currentLevel, maxLevels);
         }
 
-        private void OnClick(UpgradeButton upgradeButton)
-        {
-            if (!_upgradeStates.TryUpgrade(upgradeButton.NameID)) return;
-
-            //Refresh();
-        }
+        private void OnClick(UpgradeButton upgradeButton) => _upgrade.TryUpgrade(upgradeButton.NameID);
 
         private void ShowValues(int coins, int crystal)
         {
