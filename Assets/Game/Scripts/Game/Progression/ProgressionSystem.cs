@@ -1,6 +1,6 @@
+using UnityEngine;
 using Core.GSystem;
 using Core.UI;
-using UnityEngine;
 
 namespace Game
 {
@@ -13,10 +13,7 @@ namespace Game
 
         private int _amountOfExperienceBeforeNextLevelUp;
         private int _currentPlayerLevel;
-
-        public int MaxUpgrade => _amountOfExperienceBeforeNextLevelUp;
-        public int CurrentExperience { get; private set; }
-
+        
         public ProgressionSystem(UpgradeSystem upgradeSystem, EnemySpawnerController spawnerController, Wallet wallet, ProgressConfig config)
         {
             _upgradeSystem = upgradeSystem;
@@ -25,10 +22,12 @@ namespace Game
             _config = config;
             _amountOfExperienceBeforeNextLevelUp = _config.ExperienceBeforeLevelUp;
         }
+        
+        public int MaxUpgrade => _amountOfExperienceBeforeNextLevelUp;
+        public int CurrentExperience { get; private set; }
 
-        public void PickUpCrystal(Crystal crystal)
+        public void PickUpCrystal()
         {
-            crystal.PickUp();
             if (_upgradeSystem.IsMaxUpgrades) return;
 
             CurrentExperience++;

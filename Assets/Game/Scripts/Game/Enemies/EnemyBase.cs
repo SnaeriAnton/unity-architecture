@@ -1,6 +1,6 @@
 using System;
-using Core.GSystem;
 using UnityEngine;
+using Core.GSystem;
 using Core.Pool;
 
 namespace Game
@@ -8,12 +8,12 @@ namespace Game
     public abstract class EnemyBase : MonoBehaviour, IPoolable
     {
         protected float _health;
-        
+
         private PoolManager _poolManager;
-        private  Player _player;
+        private Player _player;
         private Action _onDespawned;
         private Action<EnemyBase> _obDiedCallBack;
-        
+
         protected Player Player => _player ??= G.Main.Resolve<Player>();
         protected PoolManager Pool => _poolManager ??= G.Main.Resolve<PoolManager>();
         public int PoolID { get; private set; }

@@ -12,7 +12,7 @@ namespace Game
         [SerializeField] private PlayerStats _stats;
         
         private WeaponSystem _weapon;
-        private Action<Crystal> _onCrystalCallback;
+        private Action _onCrystalCallback;
         private Action _onDiedCallback;
         private PlayerInputController _inputController;
         private PlayerMovement _movement;
@@ -41,7 +41,7 @@ namespace Game
                 _invulnTimer -= Time.deltaTime;
         }
 
-        public void Construct(Action<Crystal> onCrystalCallback, Action onDiedCallback)
+        public void Construct(Action onCrystalCallback, Action onDiedCallback)
         {
             _onCrystalCallback = onCrystalCallback;
             _onDiedCallback = onDiedCallback;
@@ -121,7 +121,10 @@ namespace Game
             }
 
             if (other.TryGetComponent(out Crystal crystal))
-                _onCrystalCallback.Invoke(crystal);
+            {
+                crystal.PickUp();   
+                _onCrystalCallback.Invoke();
+            }
         }
     }
 }
