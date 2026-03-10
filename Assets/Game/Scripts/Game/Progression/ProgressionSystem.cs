@@ -12,10 +12,7 @@ namespace Game
 
         private int _amountOfExperienceBeforeNextLevelUp;
         private int _currentPlayerLevel;
-
-        public int MaxUpgrade => _amountOfExperienceBeforeNextLevelUp;
-        public int CurrentExperience { get; private set; }
-
+        
         public ProgressionSystem(UpgradeSystem upgradeSystem, EnemySpawnerController spawnerController, Wallet wallet, ProgressConfig config)
         {
             _upgradeSystem = upgradeSystem;
@@ -25,6 +22,9 @@ namespace Game
             _amountOfExperienceBeforeNextLevelUp = _config.ExperienceBeforeLevelUp;
         }
 
+        public int MaxUpgrade => _amountOfExperienceBeforeNextLevelUp;
+        public int CurrentExperience { get; private set; }
+        
         public void PickUpCrystal(Crystal crystal)
         {
             crystal.PickUp();

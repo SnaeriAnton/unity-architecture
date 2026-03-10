@@ -9,6 +9,7 @@ namespace Game
         protected PoolManager _poolManager;
         protected Player _player;
         protected float _health;
+        
         private Action _onDespawned;
 
         private Action<EnemyBase> _obDiedCallBack;
