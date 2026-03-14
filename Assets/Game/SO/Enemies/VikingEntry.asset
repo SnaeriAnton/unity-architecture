@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa7fb5d24822e7245a55e23a00f265a7, type: 3}
+  m_Name: VikingEntry
+  m_EditorClassIdentifier: Assembly-CSharp::Game.EnemySpawnEntry
+  <Type>k__BackingField: 1
+  <ViewPrefab>k__BackingField: {fileID: 4675752174988222420, guid: af54dae61ee050344864f08b724fbc0f, type: 3}
+  <Stats>k__BackingField: {fileID: 11400000, guid: 34000fc106a3abd4d8714bb32307a527, type: 2}

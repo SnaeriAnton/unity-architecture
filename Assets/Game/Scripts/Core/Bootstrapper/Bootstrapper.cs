@@ -20,10 +20,7 @@ namespace Core.BootstrapperSystem
         private static async UniTask Run()
         {
             if (SceneManager.GetActiveScene().name != ScenesName.Boot.ToString())
-            {
-                UIManager.Dispose();
                 await Loader.LoadSceneAsync(ScenesName.Boot);
-            }
 
             BootManager.MarkReady();
             await UniTask.WaitUntil(() => BootManager.Initialized);

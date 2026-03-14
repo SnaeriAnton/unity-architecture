@@ -14,31 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: My::My.GeneratorData
   _stages:
   - Enemies:
-    - {fileID: 7254735299203296633, guid: 7d1e5099bdf96324281afc8b05ebba9b, type: 3}
+    - {fileID: 11400000, guid: 629cd463379bbb0458f0f76dba05de9e, type: 2}
     SpawnInterval: 4
   - Enemies:
-    - {fileID: 7254735299203296633, guid: 7d1e5099bdf96324281afc8b05ebba9b, type: 3}
+    - {fileID: 11400000, guid: 629cd463379bbb0458f0f76dba05de9e, type: 2}
     SpawnInterval: 3
   - Enemies:
-    - {fileID: 7254735299203296633, guid: 7d1e5099bdf96324281afc8b05ebba9b, type: 3}
-    - {fileID: 4675752174988222420, guid: af54dae61ee050344864f08b724fbc0f, type: 3}
+    - {fileID: 11400000, guid: 629cd463379bbb0458f0f76dba05de9e, type: 2}
+    - {fileID: 11400000, guid: 26d70c09e4719b84886bc4c2ec454d3e, type: 2}
     SpawnInterval: 3
   - Enemies:
-    - {fileID: 7254735299203296633, guid: 7d1e5099bdf96324281afc8b05ebba9b, type: 3}
-    - {fileID: 4675752174988222420, guid: af54dae61ee050344864f08b724fbc0f, type: 3}
+    - {fileID: 11400000, guid: 629cd463379bbb0458f0f76dba05de9e, type: 2}
+    - {fileID: 11400000, guid: 26d70c09e4719b84886bc4c2ec454d3e, type: 2}
     SpawnInterval: 2
   - Enemies:
-    - {fileID: 7254735299203296633, guid: 7d1e5099bdf96324281afc8b05ebba9b, type: 3}
-    - {fileID: 4675752174988222420, guid: af54dae61ee050344864f08b724fbc0f, type: 3}
-    - {fileID: 5965083988784767052, guid: ad756574c3a8d2d4988a6d10a615aa85, type: 3}
+    - {fileID: 11400000, guid: 629cd463379bbb0458f0f76dba05de9e, type: 2}
+    - {fileID: 11400000, guid: 26d70c09e4719b84886bc4c2ec454d3e, type: 2}
+    - {fileID: 11400000, guid: 5d38e4d2d86769a4ab9a54722a729086, type: 2}
     SpawnInterval: 2
   - Enemies:
-    - {fileID: 7254735299203296633, guid: 7d1e5099bdf96324281afc8b05ebba9b, type: 3}
-    - {fileID: 4675752174988222420, guid: af54dae61ee050344864f08b724fbc0f, type: 3}
-    - {fileID: 5965083988784767052, guid: ad756574c3a8d2d4988a6d10a615aa85, type: 3}
+    - {fileID: 11400000, guid: 629cd463379bbb0458f0f76dba05de9e, type: 2}
+    - {fileID: 11400000, guid: 26d70c09e4719b84886bc4c2ec454d3e, type: 2}
+    - {fileID: 11400000, guid: 5d38e4d2d86769a4ab9a54722a729086, type: 2}
     SpawnInterval: 1
-  <CoinTemplate>k__BackingField: {fileID: 3460377391936473129, guid: 5e5405d8996b521479cdfae5c50aeb0c, type: 3}
-  <CrystalTemplate>k__BackingField: {fileID: 3868677141088828173, guid: 7bdd19d63ed0e6d4bbfc928b4a675624, type: 3}
-  <CoinsChanceOnSpawn>k__BackingField: 0.1
-  <CrystalsChanceOnSpawn>k__BackingField: 0.8
   <RadiusPlayer>k__BackingField: 3

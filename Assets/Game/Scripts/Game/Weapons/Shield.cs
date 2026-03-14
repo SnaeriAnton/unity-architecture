@@ -2,43 +2,46 @@ namespace Game
 {
     public class Shield : Weapon
     {
+        private ShieldModel _shieldModel;
         private bool _isActive = true;
-        
-        public int CurrentCoolDownCount { get; private set; }
-        public int CoolDown => _stats.CoolDown;
-
-        private bool ShieldIsActive => _stats.CoolDown == CurrentCoolDownCount;
 
         public override void SetStats(WeaponStats stats)
         {
             base.SetStats(stats);
             _isActive = true;
-            CurrentCoolDownCount = _stats.CoolDown;
+            _shieldModel.Init(_stats);
+        }
+
+        public void SetShieldModel(ShieldModel shieldModel)
+        {
+            _shieldModel = shieldModel;
+            _shieldModel.Init(_stats);
         }
 
         public bool TryApply()
         {
             if (!_isActive) return false;
-            
-            if (ShieldIsActive)
+
+            if (_shieldModel.ShieldIsActive)
             {
-                CurrentCoolDownCount = 0;
+                _shieldModel.Apply();
                 return true;
             }
 
             return false;
         }
 
-        public override void UpdateValues()
+        public override void RefreshState()
         {
-            if (ShieldIsActive || !_isActive) return;
+            if (_shieldModel.ShieldIsActive || !_isActive) return;
 
-            CurrentCoolDownCount++;
+            _shieldModel.RefreshState();
         }
 
         public override void Reset()
         {
             base.Reset();
+            _shieldModel.Reset();
             _isActive = false;
         }
     }

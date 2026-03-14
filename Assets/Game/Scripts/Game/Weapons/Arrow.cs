@@ -1,41 +1,44 @@
 using System;
+using Contracts;
 using UnityEngine;
 using Core.Pool;
 
 namespace Game
 {
-    public class Arrow : MonoBehaviour, IPoolable
+    public class Arrow : MonoBehaviour, IPoolable, ITickable
     {
         private Action _onDespawned;
         private WeaponStats _stats;
         private Vector3 _direction;
+        private IGameLoop _loop;
         private float _liveTime;
 
         public int PoolID { get; private set; }
 
-        public void Init(WeaponStats stats, Vector3 direction)
+        public void Init(IGameLoop loop, WeaponStats stats, Vector3 direction)
         {
+            _loop = loop;
             _stats = stats;
             _direction = direction;
             _liveTime = _stats.LifeTime;
         }
 
-        private void Update()
+        public void Tick(float dt)
         {
-            transform.position = Vector3.MoveTowards(transform.position, transform.position + _direction, _stats.FlightSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, transform.position + _direction, _stats.FlightSpeed * dt);
 
-            _liveTime -= Time.deltaTime;
-            if (_liveTime <= 0) _onDespawned.Invoke();
+            _liveTime -= dt;
+            if (_liveTime <= 0) Destroy();
         }
 
         void IPoolable.OnDespawned() => gameObject.SetActive(false);
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent(out EnemyBase enemy))
+            if (other.TryGetComponent(out IEnemyTarget enemy))
             {
                 enemy.TakeDamage(_stats.Damage);
-                _onDespawned.Invoke();
+                Destroy();
             }
         }
 
@@ -44,6 +47,12 @@ namespace Game
             PoolID = poolID;
             _onDespawned = onDespawned;
             gameObject.SetActive(true);
+        }
+
+        private void Destroy()
+        {
+            _loop.Remove(this);
+            _onDespawned?.Invoke();
         }
     }
 }

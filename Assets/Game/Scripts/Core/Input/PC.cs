@@ -26,8 +26,7 @@ namespace Core.InputSystem
             _axis.x = Input.GetAxisRaw("Horizontal");
             _axis.y = Input.GetAxisRaw("Vertical");
 
-            if (_axis.x != 0 || _axis.y != 0)
-                OnAxis?.Invoke(_axis);
+            OnAxis?.Invoke(_axis);
         }
     }
 }

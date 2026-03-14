@@ -1,5 +1,4 @@
-﻿
-namespace Game
+﻿namespace Game
 {
     public class LevelUpInfo<TLevelUp, TStats> where TLevelUp : LevelUpsData<TStats> where TStats : struct
     {
