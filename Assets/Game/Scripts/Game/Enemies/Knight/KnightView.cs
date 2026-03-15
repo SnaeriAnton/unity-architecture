@@ -15,7 +15,7 @@ namespace Game
             _knightModel = model as KnightModel;
         }
 
-        protected virtual void Update()
+        private void Update()
         {
             if (_model.Target.IsDead) return;
 
