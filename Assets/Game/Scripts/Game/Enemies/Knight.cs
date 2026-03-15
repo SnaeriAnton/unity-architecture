@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using Core.Pool;
 
 namespace Game
 {
@@ -9,7 +8,7 @@ namespace Game
         private bool _playerInRange;
         private float _lastTimeSpawn;
 
-        protected virtual void Update()
+        private void Update()
         {
             if (Player.IsDead) return;
 
