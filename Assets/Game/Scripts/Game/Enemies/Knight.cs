@@ -9,7 +9,7 @@ namespace Game
         private bool _playerInRange;
         private float _lastTimeSpawn;
 
-        protected virtual void Update()
+        private void Update()
         {
             if (_player.IsDead) return;
 
