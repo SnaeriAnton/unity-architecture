@@ -1,3 +1,4 @@
+using Contracts;
 using UnityEngine;
 
 namespace Game
@@ -10,7 +11,7 @@ namespace Game
         
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent(out EnemyBase enemy))
+            if (other.TryGetComponent(out IEnemyTarget enemy))
                 enemy.TakeDamage(_damage);
         }
     }

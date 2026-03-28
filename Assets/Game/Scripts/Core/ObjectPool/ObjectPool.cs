@@ -17,7 +17,7 @@ namespace Core.Pool
             _root = root;
         }
 
-        public T Spawn(int poolID,  Vector3 position, Quaternion quaternion)
+        public T Spawn(int poolID, Vector3 position, Quaternion quaternion)
         {
             T obj = _stack.Count > 0 ? _stack.Pop() : CreateNew();
             obj.transform.SetPositionAndRotation(position, quaternion);
@@ -32,10 +32,10 @@ namespace Core.Pool
         public void Despawn(T obj)
         {
             if (!_list.Remove(obj)) return;
-            
+
             if (obj.TryGetComponent(out IPoolable p))
                 p.OnDespawned();
-            
+
             obj.transform.SetParent(_root, false);
             _stack.Push(obj);
         }

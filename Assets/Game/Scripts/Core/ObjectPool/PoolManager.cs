@@ -4,7 +4,7 @@ using ExtensionSystems;
 
 namespace Core.Pool
 {
-    public sealed class PoolManager
+    public sealed class PoolManager : IPoolService
     {
         private readonly Dictionary<int, IResettablePool> _pools = new();
 

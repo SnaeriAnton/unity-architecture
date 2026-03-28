@@ -1,29 +1,28 @@
-using UnityEngine;
 using Random = UnityEngine.Random;
 using Contracts;
 
 namespace Game
 {
-    public class EnemySpawnerController : ITickable
+    public class EnemySpawnerController : ITickable, IEnemyStageProgression
     {
         private readonly GeneratorData _data;
-        private readonly Player _player;
-        private readonly Border _border;
-        private readonly Factory _factory;
-        private readonly EnemyDeathHandler _handler;
+        private readonly ISpawnPointProvider _border;
+        private readonly IEnemyFactory _factory;
+        private readonly IGameLoop _gameLoop;
+        private readonly ITarget _player;
 
         private GeneratorStage _currentStage;
         private bool _isSpawning;
         private int _currentStageIndex;
         private float _spawnTimer;
 
-        public EnemySpawnerController(Player player, GeneratorData data, EnemyDeathHandler handler, Factory factory, Border border)
+        public EnemySpawnerController(GeneratorData data, IEnemyFactory factory, ISpawnPointProvider border, ITarget player, IGameLoop gameLoop)
         {
-            _player = player;
             _data = data;
             _factory = factory;
-            _handler = handler;
             _border = border;
+            _player = player;
+            _gameLoop = gameLoop;
             _spawnTimer = 0f;
         }
 
@@ -35,15 +34,16 @@ namespace Game
 
         public void Stop() => _isSpawning = false;
 
-        public void Tick()
+        public void Tick(float dt)
         {
             if (!_isSpawning) return;
-            _spawnTimer += Time.deltaTime;
+            _spawnTimer += dt;
 
             if (_spawnTimer < _currentStage.SpawnInterval) return;
 
             _spawnTimer = 0f;
-            _factory.SpawnEnemy(_currentStage.Enemies[Random.Range(0, _currentStage.Enemies.Count)], _handler.Handle, _border.PickPoint(_player.transform.position, _data.RadiusPlayer));
+            EnemyController enemy = _factory.SpawnEnemy(_currentStage.Enemies[Random.Range(0, _currentStage.Enemies.Count)], _border.PickPoint(_player.Position, _data.RadiusPlayer));
+            _gameLoop.Add(enemy);
         }
 
         public void Reset()

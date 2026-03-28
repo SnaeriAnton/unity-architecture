@@ -1,55 +1,70 @@
+using System;
 using Contracts;
 using Core.Pool;
-using Core.UI;
 
 namespace Game
 {
     public class GameManager
     {
-        private readonly Player _player;
+        private readonly PlayerController _player;
         private readonly EnemySpawnerController _spawnerController;
-        private readonly ProgressionSystem _progressionSystem;
-        private readonly UpgradeSystem _upgradeSystem;
+        private readonly ProgressionController _progressionController;
+        private readonly UpgradeController _upgradeController;
         private readonly Wallet _wallet;
         private readonly PoolManager _poolManager;
+        private readonly GameFlowCoordinator _gameFlowCoordinator;
         private readonly IInput _input;
         
-        public GameManager(Player player, EnemySpawnerController spawnerController, ProgressionSystem progressionSystem, UpgradeSystem upgradeSystem, Wallet wallet, PoolManager poolManager, IInput input)
+        public GameManager(
+            PlayerController player, 
+            EnemySpawnerController spawnerController, 
+            ProgressionController progressionController, 
+            UpgradeController upgradeController, 
+            Wallet wallet, 
+            PoolManager poolManager, 
+            GameFlowCoordinator gameFlowCoordinator,
+            IInput input
+            )
         {
             _player = player;
             _spawnerController = spawnerController;
-            _progressionSystem = progressionSystem;
-            _upgradeSystem = upgradeSystem;
+            _progressionController = progressionController;
+            _upgradeController = upgradeController;
             _wallet = wallet;
             _poolManager = poolManager;
+            _gameFlowCoordinator = gameFlowCoordinator;
             _input = input;
+            
+            _player.OnDied += GameOver;
         }
+        
+        public void Dispose() => _player.OnDied -= GameOver;
         
         public void StartGame()
         {
             _input.SetActivate(true);
             _player.StartPlay();
             _spawnerController.Start();
-            UIManager.ShowScreen<HUD>();
-        }
-
-        public void GameOver()
-        {
-            _input.SetActivate(false);
-            _spawnerController.Stop();
-            UIManager.ShowScreen<LoseScreen>();
+            _gameFlowCoordinator.ShowHud();
         }
 
         public void RestartRun()
         {
+            _gameFlowCoordinator.ResetUI();
             _poolManager.Reset();
             _wallet.Reset();
             _player.Restart();    
-            _upgradeSystem.Init();
+            _upgradeController.Reset();
             _spawnerController.Reset();
-            _progressionSystem.Reset();
-            UIManager.ResetScreens();
-            UIManager.ShowScreen<MenuScreen>();
+            _progressionController.Reset();
+            _gameFlowCoordinator.ShowMenu();
+        }
+        
+        private void GameOver()
+        {
+            _input.SetActivate(false);
+            _spawnerController.Stop();
+            _gameFlowCoordinator.ShowLose();
         }
     }
 }
