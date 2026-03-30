@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using Application;
 using UnityEngine;
+using Application;
 using Domain;
-using Runtime;
 
 namespace Presentation
 {
@@ -17,12 +16,23 @@ namespace Presentation
 
         public HUD HUD => _hud;
 
-        public void Construct(IReadOnlyDictionary<Weapons, Sprite> upgradeIconDictionary, ProgressionService progression, UpgradeSystem upgradeStates, Wallet wallet, GameSessionService game, Player player)
+        public void Construct(
+            IReadOnlyDictionary<Weapons, Sprite> upgradeIconDictionary, 
+            IProgressionReadModel progression, 
+            IProgressionCommands progressionCommands, 
+            IUpgradeReadModel upgradeModel,
+            IUpgradeCommands upgradeCommands,
+            IWalletReadModel wallet, 
+            IGameSessionCommands game, 
+            IShieldReadModel shield,
+            IPlayerReadModel player,
+            IEnemyDeathHandler enemyDeathHandler
+            )
         {
             _loseScreen.Construct(game);
             _menuScreen.Construct(game);
-            _upgradeWindow.Construct(upgradeIconDictionary, progression, upgradeStates, wallet);
-            _hud.Construct(player, wallet, progression);
+            _upgradeWindow.Construct(upgradeIconDictionary, progressionCommands, upgradeModel, upgradeCommands, wallet);
+            _hud.Construct(player, wallet, progression, shield, enemyDeathHandler, upgradeModel);
         }
 
         public void ShowMenu()

@@ -8,6 +8,6 @@ namespace Presentation
     {
         [SerializeField] private Button _homeButton;
 
-        public void Construct(GameSessionService game) => _homeButton.onClick.AddListener(game.RestartRun);
+        public void Construct(IGameSessionCommands game) => _homeButton.onClick.AddListener(game.RestartRun);
     }
 }

@@ -1,27 +1,25 @@
-using Domain;
+using System;
 
 namespace Application
 {
-    public class ProgressionService : IProgression
+    public class ProgressionService : IProgressionReadModel, IProgressionCommands
     {
-        private readonly Wallet _wallet;
+        private readonly IWallet _wallet;
         private readonly ProgressSettings _settings;
         private readonly IGameTime _gameTime;
         private readonly IUIRouter _uiRouter;
-        private readonly IHUDRefresher _refresher;
         private readonly IEnemySpawner _spawner;
-        private readonly IUpgradeService _upgradeService;
+        private readonly IUpgradeState _upgradeService;
 
         private int _amountOfExperienceBeforeNextLevelUp;
         private int _currentPlayerLevel;
 
-        public ProgressionService(Wallet wallet, ProgressSettings settings, IGameTime gameTime, IUIRouter uiRouter, IHUDRefresher refresher, IEnemySpawner spawner, IUpgradeService upgradeService)
+        public ProgressionService(IWallet wallet, ProgressSettings settings, IGameTime gameTime, IUIRouter uiRouter, IEnemySpawner spawner, IUpgradeState upgradeService)
         {
             _wallet = wallet;
             _settings = settings;
             _gameTime = gameTime;
             _uiRouter = uiRouter;
-            _refresher = refresher;
             _spawner = spawner;
             _upgradeService = upgradeService;
             _amountOfExperienceBeforeNextLevelUp = _settings.ExperienceBeforeLevelUp;
@@ -30,14 +28,18 @@ namespace Application
         public int MaxUpgrade => _amountOfExperienceBeforeNextLevelUp;
         public int CurrentExperience { get; private set; }
 
+        public event Action OnPickUpCrystal;
+        public event Action OnUpgradeStats;
+        
         public void PickUpCrystal()
         {
             if (_upgradeService.IsMaxUpgrades) return;
 
             CurrentExperience++;
-            _refresher.Refresh();
+            OnPickUpCrystal?.Invoke();
 
-            if (CurrentExperience >= _amountOfExperienceBeforeNextLevelUp)
+            //if (CurrentExperience >= _amountOfExperienceBeforeNextLevelUp)
+            if (CurrentExperience >= 2)
             {
                 if (_currentPlayerLevel % _settings.LevelUpStageStep == 0) _spawner.LevelUp();
                 _wallet.AddCrystal();
@@ -60,7 +62,7 @@ namespace Application
             if (_upgradeService.IsMaxUpgrades) return;
             CurrentExperience = 0;
             _amountOfExperienceBeforeNextLevelUp = (int)(_amountOfExperienceBeforeNextLevelUp * _settings.ExperienceMultiplier);
-            _refresher.Refresh();
+            OnUpgradeStats?.Invoke();
         }
     }
 }

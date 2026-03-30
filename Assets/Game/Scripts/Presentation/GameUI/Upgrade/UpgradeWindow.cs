@@ -19,15 +19,17 @@ namespace Presentation
         private readonly Dictionary<Weapons, UpgradeButton> _upgradeButtonsDictionary = new();
 
         private Dictionary<Weapons, Sprite> _upgradeIconDictionary = new();
-        private ProgressionService _progression;
-        private UpgradeSystem _upgrade;
-        private Wallet _wallet;
+        private IProgressionCommands _progressionCommands;
+        private IUpgradeCommands _upgradeCommands;
+        private IUpgradeReadModel _upgrade;
+        private IWalletReadModel _wallet;
 
-        public void Construct(IReadOnlyDictionary<Weapons, Sprite> upgradeIconDictionary, ProgressionService progression, UpgradeSystem upgrade, Wallet wallet)
+        public void Construct(IReadOnlyDictionary<Weapons, Sprite> upgradeIconDictionary, IProgressionCommands progressionCommands, IUpgradeReadModel upgrade, IUpgradeCommands upgradeCommands, IWalletReadModel wallet)
         {
             _upgradeIconDictionary = new(upgradeIconDictionary);
-            _progression = progression;
+            _progressionCommands = progressionCommands;
             _upgrade = upgrade;
+            _upgradeCommands = upgradeCommands;
             _wallet = wallet;
             _closeButton.onClick.AddListener(Hide);
         }
@@ -44,22 +46,22 @@ namespace Presentation
         public override void Hide()
         {
             base.Hide();
-            _progression.UpgradeStats();
+            _progressionCommands.UpgradeStats();
         }
 
         private void Refresh()
         {
-            SetInfo(Weapons.Player,
-                _upgrade.PlayerLevelUpInfo.GetNextStats().Type,
-                _upgradeIconDictionary[Weapons.Player],
-                _upgrade.PlayerLevelUpInfo.GetNextStats().Price,
-                _upgrade.PlayerLevelUpInfo.CurrentLevelUp,
-                _upgrade.PlayerLevelUpInfo.CountLevelUps);
+            List<UpgradeButtonViewData> datas = new(_upgrade.GetUpgradeItems());
 
-            foreach (KeyValuePair<Weapons, LevelUpInfo<WeaponUpgradeDefinition, WeaponStats>> weapon in _upgrade.WeaponLevelUpsData)
+            foreach (UpgradeButtonViewData data in datas)
             {
-                UpgradeDescription<WeaponStats> description = weapon.Value.GetNextStats();
-                SetInfo(weapon.Key, description.Type, _upgradeIconDictionary[weapon.Key], description.Price, weapon.Value.CurrentLevelUp, weapon.Value.CountLevelUps);
+                SetInfo(
+                    data.Name,
+                    data.Type,
+                    _upgradeIconDictionary[data.Name],
+                    data.Price,
+                    data.CurrentLevel,
+                    data.CountLevels);
             }
         }
 
@@ -76,7 +78,7 @@ namespace Presentation
 
         private void OnClick(UpgradeButton upgradeButton)
         {
-            if (!_upgrade.TryUpgrade(upgradeButton.Name)) return;
+            if (!_upgradeCommands.TryUpgrade(upgradeButton.Name)) return;
 
             _crystalText.text = _wallet.Crystals.ToString();
             _coinsText.text = _wallet.Coins.ToString();

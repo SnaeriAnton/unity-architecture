@@ -2,26 +2,26 @@ using Domain;
 
 namespace Application
 {
-    public class GameSessionService
+    public class GameSessionService : IGameSessionCommands
     {
-        private readonly Wallet _wallet;
+        private readonly IWallet _wallet;
         private readonly IInput _input;
         private readonly IUIRouter _uiRouter;
         private readonly IPlayerSession _player;
         private readonly IEnemySpawner _spawner;
-        private readonly IProgression _progression;
+        private readonly IProgressionCommands _progression;
         private readonly IPoolService _pool;
-        private readonly IUpgradeService _upgrade;
+        private readonly IUpgradeCommands _upgrade;
 
         public GameSessionService(
-            Wallet wallet, 
+            IWallet wallet, 
             IInput input, 
             IUIRouter uiRouter, 
             IPlayerSession player, 
             IEnemySpawner spawner, 
-            IProgression progression, 
+            IProgressionCommands progression, 
             IPoolService pool, 
-            IUpgradeService upgrade
+            IUpgradeCommands upgrade
             )
         {
             _wallet = wallet;

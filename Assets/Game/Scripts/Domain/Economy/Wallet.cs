@@ -9,6 +9,9 @@ namespace Domain
         {
             Coins = coins;
             Crystals = crystals;
+            
+            Coins = 100;
+            Crystals = 100;
         }
 
         public void AddCoin() => Coins++;
@@ -34,6 +37,9 @@ namespace Domain
         {
             Coins = 0;
             Crystals = 0;
+            
+            Coins = 100;
+            Crystals = 100;
         }
     }
 }
