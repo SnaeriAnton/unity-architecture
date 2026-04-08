@@ -33,6 +33,7 @@ namespace Game
         
         private void Die()
         {
+            Dispose();
             _isDead.Set(true);
         }
     }
