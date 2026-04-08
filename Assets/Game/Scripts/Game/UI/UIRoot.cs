@@ -5,21 +5,37 @@ namespace Game
 {
     public class UIRoot : MonoBehaviour
     {
-        [SerializeField] private HUD _hud;
-        [SerializeField] private LoseScreen _loseScreen;
-        [SerializeField] private UpgradeWindow _upgradeWindow;
-        [SerializeField] private MenuScreen _menuScreen;
-        
-        public void Construct(ProgressionSystem progression, UpgradeSystem upgradeStates, Wallet wallet, GameManager gameManager, Player player)
+        [SerializeField] private HUDView _hudView;
+        [SerializeField] private LoseScreenView _loseScreenView;
+        [SerializeField] private UpgradeWindowView _upgradeWindowView;
+        [SerializeField] private MenuScreenView _menuScreenView;
+
+        public void Construct(
+            LoseScreenViewModel loseScreenViewModel,
+            MenuScreenViewModel menuScreenViewModel,
+            UpgradeWindowViewModel upgradeWindowViewModel,
+            HUDViewModel hudViewModel,
+            UIService uiService
+        )
         {
-            _loseScreen.Construct(gameManager);
-            _menuScreen.Construct(gameManager);
-            _upgradeWindow.Construct(progression, upgradeStates, wallet);
-            _hud.Construct(player, wallet, progression);
-            UIManager.Register(_hud);
-            UIManager.Register(_menuScreen);
-            UIManager.Register(_loseScreen);
-            UIManager.Register(_upgradeWindow);
+            _menuScreenView.Bind(menuScreenViewModel);
+            _loseScreenView.Bind(loseScreenViewModel);
+            _hudView.Bind(hudViewModel);
+            _upgradeWindowView.Bind(upgradeWindowViewModel);
+
+
+            uiService.Register(_hudView);
+            uiService.Register(_menuScreenView);
+            uiService.Register(_loseScreenView);
+            uiService.Register(_upgradeWindowView);
+        }
+        
+        public void Dispose()
+        {
+            _menuScreenView.Unbind();
+            _loseScreenView.Unbind();
+            _hudView.Unbind();
+            _upgradeWindowView.Unbind();
         }
     }
 }

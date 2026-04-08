@@ -21,7 +21,7 @@ namespace Game
             LayoutChildren();
         }
 
-        public override void Apply() => transform.Rotate(0f, 0f, -90f * _stats.RoundSpeed * Time.deltaTime, Space.Self);
+        public override void Tick(float dt) => transform.Rotate(0f, 0f, -90f * _stats.RoundSpeed * dt, Space.Self);
 
         public override void Reset()
         {

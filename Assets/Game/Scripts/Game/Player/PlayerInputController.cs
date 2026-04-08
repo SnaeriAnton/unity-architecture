@@ -1,5 +1,5 @@
-
 using Contracts;
+using UniRx;
 
 namespace Game
 {
@@ -8,13 +8,20 @@ namespace Game
         private readonly PlayerMovement _movement;
         private readonly IInput _input;
 
+        private CompositeDisposable _disposable = new();
+
         public PlayerInputController(PlayerMovement movement, IInput input)
         {
             _input = input;
             _movement = movement;
         }
 
-        public void Enable()  => _input.OnAxis += _movement.OnAxis;
-        public void Disable() => _input.OnAxis -= _movement.OnAxis;
+        public void Enable()
+        {
+            _disposable = new();
+            _input.OnAxis.Subscribe(_movement.OnAxis).AddTo(_disposable);
+        }
+
+        public void Disable() => _disposable.Dispose();
     }
 }

@@ -1,30 +1,34 @@
-using UnityEngine;
+using System;
 using Random = UnityEngine.Random;
 using Contracts;
+using UniRx;
 
 namespace Game
 {
-    public class EnemySpawnerController : ITickable
+    public class EnemySpawnerController : IEnemyStageProgression, IDisposable
     {
+        private readonly CompositeDisposable _disposable = new();
         private readonly GeneratorData _data;
-        private readonly Player _player;
-        private readonly Border _border;
-        private readonly Factory _factory;
-        private readonly EnemyDeathHandler _handler;
+        private readonly ISpawnPointProvider _border;
+        private readonly IEnemyFactory _factory;
+        private readonly ITarget _player;
+        private readonly IUpdateStream _updateStream;
 
         private GeneratorStage _currentStage;
         private bool _isSpawning;
         private int _currentStageIndex;
         private float _spawnTimer;
 
-        public EnemySpawnerController(Player player, GeneratorData data, EnemyDeathHandler handler, Factory factory, Border border)
+        public EnemySpawnerController(GeneratorData data, IEnemyFactory factory, ISpawnPointProvider border, ITarget player, IUpdateStream updateStream)
         {
-            _player = player;
             _data = data;
             _factory = factory;
-            _handler = handler;
             _border = border;
+            _player = player;
+            _updateStream = updateStream;
             _spawnTimer = 0f;
+
+            _updateStream.OnUpdate.Subscribe(Tick).AddTo(_disposable);
         }
 
         public void Start()
@@ -34,16 +38,17 @@ namespace Game
         }
 
         public void Stop() => _isSpawning = false;
+        public void Dispose() => _disposable?.Dispose();
 
-        public void Tick()
+        public void Tick(float dt)
         {
             if (!_isSpawning) return;
-            _spawnTimer += Time.deltaTime;
+            _spawnTimer += dt;
 
             if (_spawnTimer < _currentStage.SpawnInterval) return;
 
             _spawnTimer = 0f;
-            _factory.SpawnEnemy(_currentStage.Enemies[Random.Range(0, _currentStage.Enemies.Count)], _handler.Handle, _border.PickPoint(_player.transform.position, _data.RadiusPlayer));
+            EnemyController enemy = _factory.SpawnEnemy(_currentStage.Enemies[Random.Range(0, _currentStage.Enemies.Count)], _border.PickPoint(_player.Position, _data.RadiusPlayer));
         }
 
         public void Reset()
@@ -61,5 +66,6 @@ namespace Game
                 _currentStage = _data.Stages[_currentStageIndex];
             }
         }
+
     }
 }

@@ -5,10 +5,10 @@ namespace Contracts
 {
     public interface IInput
     {
-        public event Action<Vector2> OnClickDown;
-        public event Action<Vector2> OnClickHold;
-        public event Action<Vector2> OnClickUp;
-        public event Action<Vector2> OnAxis;
+        public IObservable<Vector2> OnClickDown { get; }
+        public IObservable<Vector2> OnClickHold { get; }
+        public IObservable<Vector2> OnClickUp { get; }
+        public IObservable<Vector2> OnAxis { get; }
         
         public void SetActivate(bool activate);
     }
