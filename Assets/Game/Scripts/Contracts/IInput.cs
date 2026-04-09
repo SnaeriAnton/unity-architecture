@@ -1,14 +1,14 @@
-using System;
+using R3;
 using UnityEngine;
 
 namespace Contracts
 {
     public interface IInput
     {
-        public event Action<Vector2> OnClickDown;
-        public event Action<Vector2> OnClickHold;
-        public event Action<Vector2> OnClickUp;
-        public event Action<Vector2> OnAxis;
+        public Observable<Vector2> OnClickDown { get; }
+        public Observable<Vector2> OnClickHold { get; }
+        public Observable<Vector2> OnClickUp { get; }
+        public Observable<Vector2> OnAxis { get; }
         
         public void SetActivate(bool activate);
     }

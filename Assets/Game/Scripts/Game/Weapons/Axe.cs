@@ -1,42 +1,56 @@
 using System;
+using Contracts;
 using UnityEngine;
 using Core.Pool;
+using R3;
 
 namespace Game
 {
-    public class Axe : MonoBehaviour, IPoolable
+    public class Axe : MonoBehaviour, IPoolable, IDisposable
     {
         private const float ANGULAR_SPEED_DEG = 90;
 
+        private CompositeDisposable _disposable = new();
         private Action _onDespawned;
         private AxeStats _stats;
         private Vector3 _direction;
+        private IUpdateStream _updateStream;
 
         public int PoolID { get; private set; }
 
-        public void Init(AxeStats stats, Vector3 direction)
+        public void Init(IUpdateStream updateStream, AxeStats stats, Vector3 direction)
         {
+            _updateStream = updateStream;
             _stats = stats;
             _direction = direction;
+            _disposable = new();
+
+            _updateStream.OnUpdate.Subscribe(Tick).AddTo(_disposable);
         }
 
-        private void Update()
+        private void Tick(float dt)
         {
             transform.Rotate(0f, 0f, ANGULAR_SPEED_DEG * _stats.RotationSpeed * Time.deltaTime, Space.Self);
-            transform.position = Vector3.MoveTowards(transform.position, transform.position + _direction, _stats.FlightSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, transform.position + _direction, _stats.FlightSpeed * dt);
 
-            _stats.LifeTime -= Time.deltaTime;
-            if (_stats.LifeTime <= 0) _onDespawned.Invoke();
+            _stats.LifeTime -= dt;
+            if (_stats.LifeTime <= 0) Destroy();
         }
 
-        void IPoolable.OnDespawned() => gameObject.SetActive(false);
+        public void Dispose() => _disposable?.Dispose();
+
+        void IPoolable.OnDespawned()
+        {
+            Dispose();
+            gameObject.SetActive(false);
+        }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent(out Player player))
+            if (other.TryGetComponent(out ITarget target))
             {
-                player.TakeDamage(_stats.Damage);
-                _onDespawned.Invoke();
+                target.TakeDamage(_stats.Damage);
+                Destroy();
             }
         }
 
@@ -46,5 +60,7 @@ namespace Game
             _onDespawned = onDespawned;
             gameObject.SetActive(true);
         }
+
+        private void Destroy() => _onDespawned?.Invoke();
     }
 }

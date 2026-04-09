@@ -25,13 +25,14 @@ namespace Game
                 health.gameObject.SetActive(false);
                 _healthQueue.Enqueue(health);
             }
-            
+
             _healthList.Clear();
         }
 
         public void ChangeHealth(int currentHealth)
         {
             _healthList.ForEach(h => h.Hide());
+
             for (int i = 0; i < currentHealth; i++)
                 _healthList[i].Show();
         }
@@ -40,7 +41,7 @@ namespace Game
         {
             if (!_healthQueue.TryPeek(out HealthView view))
                 view = Instantiate(_healthViewTemplate, transform);
-            
+
             view.gameObject.SetActive(true);
             _healthList.Add(view);
 

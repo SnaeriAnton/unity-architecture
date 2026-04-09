@@ -1,24 +1,32 @@
 using System.Collections.Generic;
+using Contracts;
 using ExtensionSystems;
 
 namespace Game
 {
-    public class WeaponSystem
+    public class WeaponSystem : IWeaponSystem
     {
         private readonly Dictionary<Weapons, Weapon> _weapons = new();
 
-        public IReadOnlyDictionary<Weapons, Weapon> Weapons => _weapons;
+        private ShieldModel _model;
+        
+        public WeaponSystem(ShieldModel model) => _model = model;
+        
         public Shield Shield { get; private set; }
 
         public void AddWeapon(Weapons name, Weapon weapon)
         {
             _weapons[name] = weapon;
-            if (weapon is Shield shield) Shield = shield;
+            if (weapon is Shield shield)
+            {
+                Shield = shield;
+                Shield.SetShieldModel(_model);
+            }
         }
 
-        public void Update() => _weapons.Values.ForEach(w => w.UpdateValues());
-
-        public void ApplyAll() => _weapons.Values.ForEach(w => w.Apply());
+        public bool HasWeapon(Weapons name) => _weapons.ContainsKey(name);
+        public void RefreshWeapons() => _weapons.Values.ForEach(w => w.RefreshState());
+        public void ApplyAll(float dt) => _weapons.Values.ForEach(w => w.Tick(dt));
 
         public void Reset()
         {
