@@ -53,6 +53,7 @@ namespace Game
             _progressionModel.OnProgressChanged -= OnProgressChanged;
             _upgrade.OnUpgraded -= OnUpgrade;
             _upgrade.OnUpgraded -= RenderShieldState;
+            _upgrade.OnUpgraded -= RenderShieldState;
         }
 
         private void OnWalletChanged() => _view.RenderCoin(_wallet.Coins);
