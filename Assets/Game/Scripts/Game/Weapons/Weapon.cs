@@ -1,16 +1,21 @@
 using UnityEngine;
-using Core.Pool;
+using Zenject;
 
 namespace Game
 {
     public abstract class Weapon : MonoBehaviour
     {
-        protected PoolManager _poolManager;
         protected WeaponStats _stats;
+        protected TickableManager _tickableManager;
 
-        public virtual void Construct(PoolManager poolManager) => _poolManager = poolManager;
-        public virtual void Apply() { }
-        public virtual void UpdateValues() { }
+        [Inject]
+        public virtual void Construct(TickableManager tickableManager)
+        {
+            _tickableManager = tickableManager;
+        }
+
+        public virtual void Tick(float dt) { }
+        public virtual void RefreshState() { }
 
         public virtual void SetStats(WeaponStats stats)
         {

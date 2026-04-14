@@ -1,28 +1,24 @@
-using System;
+using Contracts;
 using UnityEngine;
-using Core.Pool;
+using Zenject;
 
 namespace Game
 {
-    public class Crystal : MonoBehaviour, IPoolable
+    public class Crystal : MonoBehaviour, IPickup
     {
-        private Action _onDespawned;
+        private Crystal.Pool _pool;
 
-        public int PoolID { get; private set; }
+        [Inject]
+        public void Construct(Crystal.Pool pool) => _pool = pool;
 
-        void IPoolable.OnDespawned() => gameObject.SetActive(false);
-
-        public void PickUp()
+        public void PickUp(IPickupReceiver receiver)
         {
-            _onDespawned.Invoke();
-            gameObject.SetActive(false);
+            receiver.AddExperience();
+            _pool.Despawn(this);
         }
 
-        void IPoolable.OnSpawned(int poolID, Action onDespawned)
+        public class Pool : MonoMemoryPool<Crystal>
         {
-            PoolID = poolID;
-            _onDespawned = onDespawned;
-            gameObject.SetActive(true);
         }
     }
 }

@@ -1,15 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace Game
 {
     public class HealthPanel : MonoBehaviour
     {
-        [SerializeField] private HealthView _healthViewTemplate;
-
         private readonly Queue<HealthView> _healthQueue = new();
         private readonly List<HealthView> _healthList = new();
 
+        private HealthView.Pool _pool;
+
+        [Inject]
+        public void Construct(DiContainer container, HealthView.Pool pool) => _pool = pool;
+        
         public void UpdateHealth(int health)
         {
             for (int i = _healthList.Count; i < health; i++)
@@ -39,7 +43,10 @@ namespace Game
         private HealthView GetHealth()
         {
             if (!_healthQueue.TryPeek(out HealthView view))
-                view = Instantiate(_healthViewTemplate, transform);
+            {
+                view = _pool.Spawn();
+                view.transform.SetParent(transform);
+            }
             
             view.gameObject.SetActive(true);
             _healthList.Add(view);

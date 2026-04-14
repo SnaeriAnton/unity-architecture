@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace Game
 {
@@ -11,8 +12,12 @@ namespace Game
         private readonly List<Sword> _swords = new();
         private readonly Queue<Sword> _swordsQueue = new();
 
-        [SerializeField] private Sword _swordTemplate;
         [SerializeField] private float _radius = 2f;
+
+        private Sword.Pool _pool;
+
+        [Inject]
+        public void Construct(Sword.Pool pool) => _pool = pool;
 
         public override void SetStats(WeaponStats stats)
         {
@@ -21,7 +26,7 @@ namespace Game
             LayoutChildren();
         }
 
-        public override void Apply() => transform.Rotate(0f, 0f, -90f * _stats.RoundSpeed * Time.deltaTime, Space.Self);
+        public override void Tick(float dt) => transform.Rotate(0f, 0f, -90f * _stats.RoundSpeed * dt, Space.Self);
 
         public override void Reset()
         {
@@ -32,7 +37,7 @@ namespace Game
         private void AddSwords()
         {
             for (int i = _swords.Count; i < _stats.Count; i++) GetSword();
-            
+
             _swords.ForEach(s => s.SetDamage(_stats.Damage));
         }
 
@@ -63,7 +68,7 @@ namespace Game
         {
             foreach (Sword sword in _swords)
             {
-                sword.gameObject.SetActive(false);
+                _pool.Despawn(sword);
                 _swordsQueue.Enqueue(sword);
             }
 
@@ -73,9 +78,12 @@ namespace Game
         private Sword GetSword()
         {
             if (!_swordsQueue.TryDequeue(out Sword sword))
-                sword = Instantiate(_swordTemplate, transform);
+            {
+                sword = _pool.Spawn();
+                sword.transform.SetParent(transform);
+                sword.transform.localScale = Vector3.one;
+            }
 
-            sword.gameObject.SetActive(true);
             _swords.Add(sword);
             return sword;
         }

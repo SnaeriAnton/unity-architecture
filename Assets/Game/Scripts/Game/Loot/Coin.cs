@@ -1,28 +1,24 @@
-using System;
+using Contracts;
 using UnityEngine;
-using Core.Pool;
+using Zenject;
 
 namespace Game
 {
-    public class Coin : MonoBehaviour, IPoolable
+    public class Coin : MonoBehaviour, IPickup
     {
-        private Action _onDespawned;
-        
-        public int PoolID { get; private set; }
-        
-        void IPoolable.OnDespawned() => gameObject.SetActive(false);
-        
-        public void PickUp()
+        private Coin.Pool _pool;
+
+        [Inject]
+        public void Construct(Coin.Pool pool) => _pool = pool;
+
+        public void PickUp(IPickupReceiver receiver)
         {
-            _onDespawned.Invoke();
-            gameObject.SetActive(false);
+            receiver.AddCoin();
+            _pool.Despawn(this);
         }
-        
-        void IPoolable.OnSpawned(int poolID, Action onDespawned)
+
+        public class Pool : MonoMemoryPool<Coin>
         {
-            PoolID = poolID;
-            _onDespawned = onDespawned;
-            gameObject.SetActive(true);
         }
     }
 }

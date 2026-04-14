@@ -1,19 +1,25 @@
-using System;
+using Contracts;
 using UnityEngine;
-using Core.Pool;
+using Zenject;
 
 namespace Game
 {
-    public class Spear : MonoBehaviour, IPoolable
+    public class Spear : MonoBehaviour, ITickable
     {
-        private Action _onDespawned;
         private WeaponStats _stats;
         private Vector3 _direction;
+        private TickableManager _tickableManager;
+        private Spear.Pool _pool;
         private float _liveTime;
         private int _currentStrength;
 
-        public int PoolID { get; private set; }
-
+        [Inject]
+        public void Construct(TickableManager tickableManager, Spear.Pool pool)
+        {
+            _tickableManager = tickableManager;
+            _pool = pool;
+        }
+        
         public void Init(WeaponStats stats, Vector3 direction)
         {
             _stats = stats;
@@ -22,33 +28,34 @@ namespace Game
             _liveTime = _stats.LifeTime;
         }
 
-        private void Update()
+        public void Tick()
         {
             transform.position = Vector3.MoveTowards(transform.position, transform.position + _direction, _stats.FlightSpeed * Time.deltaTime);
 
             _liveTime -= Time.deltaTime;
 
-            if (_liveTime <= 0) _onDespawned.Invoke();
+            if (_liveTime <= 0) Destroy();
         }
-
-        void IPoolable.OnDespawned() => gameObject.SetActive(false);
-
+        
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent(out EnemyBase enemy))
+            if (other.TryGetComponent(out IEnemyTarget enemy))
             {
                 enemy.TakeDamage(_stats.Damage);
                 _currentStrength--;
 
-                if (_currentStrength == 0) _onDespawned.Invoke();
+                if (_currentStrength == 0) Destroy();
             }
         }
 
-        void IPoolable.OnSpawned(int poolID, Action onDespawned)
+        private void Destroy()
         {
-            PoolID = poolID;
-            _onDespawned = onDespawned;
-            gameObject.SetActive(true);
+            _tickableManager.Remove(this);
+            _pool.Despawn(this);
+        }
+        
+        public class Pool : MonoMemoryPool<Spear>
+        {
         }
     }
 }

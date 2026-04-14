@@ -6,7 +6,7 @@ namespace Game
     [Serializable]
     public struct GeneratorStage
     {
-        public List<EnemyBase> Enemies;
+        public List<EnemySpawnEntry> Enemies;
         public float SpawnInterval;
     }
 }

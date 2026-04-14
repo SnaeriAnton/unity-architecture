@@ -1,0 +1,67 @@
+using Random = UnityEngine.Random;
+using Contracts;
+using UnityEngine;
+using Zenject;
+
+namespace Game
+{
+    public class EnemySpawnerPresenter : ITickable, IEnemyStageProgression
+    {
+        private readonly GeneratorData _data;
+        private readonly TickableManager _tickableManager;
+        private readonly ISpawnPointProvider _border;
+        private readonly IEnemyFactory _factory;
+        private readonly ITarget _player;
+
+        private GeneratorStage _currentStage;
+        private bool _isSpawning;
+        private int _currentStageIndex;
+        private float _spawnTimer;
+
+        public EnemySpawnerPresenter(GeneratorData data, IEnemyFactory factory, ISpawnPointProvider border, ITarget player, TickableManager tickableManager)
+        {
+            _data = data;
+            _factory = factory;
+            _border = border;
+            _player = player;
+            _tickableManager = tickableManager;
+            _spawnTimer = 0f;
+        }
+
+        public void Start()
+        {
+            _currentStage = _data.Stages[_currentStageIndex];
+            _isSpawning = true;
+        }
+
+        public void Stop() => _isSpawning = false;
+
+        public void Tick()
+        {
+            if (!_isSpawning) return;
+            _spawnTimer += Time.deltaTime;
+
+            if (_spawnTimer < _currentStage.SpawnInterval) return;
+
+            _spawnTimer = 0f;
+            EnemyPresenter enemy = _factory.SpawnEnemy(_currentStage.Enemies[Random.Range(0, _currentStage.Enemies.Count)], _border.PickPoint(_player.Position, _data.RadiusPlayer));
+            _tickableManager.Add(enemy);
+        }
+
+        public void Reset()
+        {
+            _currentStageIndex = 0;
+            _spawnTimer = 0f;
+            _currentStage = _data.Stages[_currentStageIndex];
+        }
+
+        public void LevelUp()
+        {
+            if (_currentStageIndex < _data.Stages.Count - 1)
+            {
+                _currentStageIndex++;
+                _currentStage = _data.Stages[_currentStageIndex];
+            }
+        }
+    }
+}

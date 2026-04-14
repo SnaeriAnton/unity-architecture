@@ -1,17 +1,23 @@
-using System;
 using UnityEngine;
-using Core.Pool;
+using Contracts;
+using Zenject;
 
 namespace Game
 {
-    public class Arrow : MonoBehaviour, IPoolable
+    public class Arrow : MonoBehaviour, ITickable
     {
-        private Action _onDespawned;
         private WeaponStats _stats;
+        private Arrow.Pool _pool;
         private Vector3 _direction;
+        private TickableManager _tickableManager;
         private float _liveTime;
 
-        public int PoolID { get; private set; }
+        [Inject]
+        public void Construct(TickableManager tickableManager, Arrow.Pool pool)
+        {
+            _tickableManager = tickableManager;
+            _pool = pool;
+        }
 
         public void Init(WeaponStats stats, Vector3 direction)
         {
@@ -20,30 +26,31 @@ namespace Game
             _liveTime = _stats.LifeTime;
         }
 
-        private void Update()
+        public void Tick()
         {
             transform.position = Vector3.MoveTowards(transform.position, transform.position + _direction, _stats.FlightSpeed * Time.deltaTime);
 
             _liveTime -= Time.deltaTime;
-            if (_liveTime <= 0) _onDespawned.Invoke();
+            if (_liveTime <= 0) Destroy();
         }
-
-        void IPoolable.OnDespawned() => gameObject.SetActive(false);
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent(out EnemyBase enemy))
+            if (other.TryGetComponent(out IEnemyTarget enemy))
             {
                 enemy.TakeDamage(_stats.Damage);
-                _onDespawned.Invoke();
+                Destroy();
             }
         }
 
-        void IPoolable.OnSpawned(int poolID, Action onDespawned)
+        private void Destroy()
         {
-            PoolID = poolID;
-            _onDespawned = onDespawned;
-            gameObject.SetActive(true);
+            _pool.Despawn(this);
+            _tickableManager.Remove(this);
+        }
+
+        public class Pool : MonoMemoryPool<Arrow>
+        {
         }
     }
 }

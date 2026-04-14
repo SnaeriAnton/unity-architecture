@@ -1,50 +1,58 @@
-using System;
+using Contracts;
 using UnityEngine;
-using Core.Pool;
+using Zenject;
 
 namespace Game
 {
-    public class Axe : MonoBehaviour, IPoolable
+    public class Axe : MonoBehaviour, ITickable
     {
         private const float ANGULAR_SPEED_DEG = 90;
 
-        private Action _onDespawned;
         private AxeStats _stats;
         private Vector3 _direction;
-
-        public int PoolID { get; private set; }
-
-        public void Init(AxeStats stats, Vector3 direction)
+        private TickableManager _tickableManager;
+        private Axe.Pool _pool;
+        
+        [Inject]
+        public void Construct(TickableManager tickableManager, Axe.Pool pool)
         {
+            _tickableManager = tickableManager;
+            _pool = pool;
+        }
+        
+        public void Init(TickableManager tickableManager, AxeStats stats, Vector3 direction)
+        {
+            _tickableManager = tickableManager;
             _stats = stats;
             _direction = direction;
         }
 
-        private void Update()
+        public void Tick()
         {
             transform.Rotate(0f, 0f, ANGULAR_SPEED_DEG * _stats.RotationSpeed * Time.deltaTime, Space.Self);
             transform.position = Vector3.MoveTowards(transform.position, transform.position + _direction, _stats.FlightSpeed * Time.deltaTime);
 
             _stats.LifeTime -= Time.deltaTime;
-            if (_stats.LifeTime <= 0) _onDespawned.Invoke();
+            if (_stats.LifeTime <= 0) Destroy();
         }
-
-        void IPoolable.OnDespawned() => gameObject.SetActive(false);
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent(out Player player))
+            if (other.TryGetComponent(out ITarget target))
             {
-                player.TakeDamage(_stats.Damage);
-                _onDespawned.Invoke();
+                target.TakeDamage(_stats.Damage);
+                Destroy();
             }
         }
-
-        void IPoolable.OnSpawned(int poolID, Action onDespawned)
+        
+        private void Destroy()
         {
-            PoolID = poolID;
-            _onDespawned = onDespawned;
-            gameObject.SetActive(true);
+            _tickableManager.Remove(this);
+            _pool.Despawn(this);
+        }
+        
+        public class Pool : MonoMemoryPool<Axe>
+        {
         }
     }
 }

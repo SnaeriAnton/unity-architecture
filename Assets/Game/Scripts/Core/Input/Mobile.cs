@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
+using Zenject;
 using Contracts;
 
 namespace Core.InputSystem
 {
-    internal class Mobile : IInputProvider
+    internal class Mobile : IInput, ITickable
     {
         private bool _isActive;
         
@@ -14,6 +15,6 @@ namespace Core.InputSystem
         public event Action<Vector2> OnAxis;
 
         public void SetActivate(bool activate) => _isActive = activate;
-        public void Update() { }
+        public void Tick() { }
     }
 }
