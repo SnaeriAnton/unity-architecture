@@ -25,13 +25,6 @@ namespace Core.Installer
             Container.BindInstance(_gameConfig).AsSingle();
             Container.BindInstance(_enemyDropConfig).AsSingle();
             Container.BindInstance(new WalletSettings(_gameConfig.StartCoinValues, _gameConfig.StartCrystalValues)).AsSingle();
-            
-            
-            // foreach (WeaponLevelUpsData data in _weaponLevelUpsData)
-            //     Container.Bind<WeaponLevelUpsData>().FromInstance(data);
-            
-            // // Нужно только если внутри самого SO есть [Inject]
-            // Container.QueueForInject(_playerLevelUpsData);
         }
     }
 }

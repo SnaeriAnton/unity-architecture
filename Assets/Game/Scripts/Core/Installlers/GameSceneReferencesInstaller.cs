@@ -14,7 +14,6 @@ namespace Core.Installer
         
         public override void InstallBindings()
         {
-
             Container.BindInstance(_playerView).AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerTarget>().FromInstance(_playerTarget).AsSingle();
             Container.BindInterfacesAndSelfTo<Border>().FromInstance(_border).AsSingle();

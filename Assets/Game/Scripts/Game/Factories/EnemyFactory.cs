@@ -46,7 +46,7 @@ namespace Game
                 case EnemyNames.Samurai:
                     view = _samuraiPool.Spawn();
                     view.transform.position = pos;
-                    model = new EnemyModel(enemyEntry.Stats.Stats);
+                    model = new SamuraiModel(enemyEntry.Stats.Stats);
                     presenter = new SamuraiPresenter(view, model, _enemyDeathProcessor, _player);
                     break;
                 case EnemyNames.Viking:
@@ -66,7 +66,5 @@ namespace Game
             view.GetComponent<EnemyDamageReceiver>().Construct(presenter);
             return presenter;
         }
-
-    
     }
 }
