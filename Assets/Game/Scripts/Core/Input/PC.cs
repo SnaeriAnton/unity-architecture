@@ -1,9 +1,11 @@
 using System;
+using Contracts;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace Core.InputSystem
 {
-    internal class PC : IInputProvider
+    internal class PC : IInput, ITickable
     {
         private bool _isActive;
 
@@ -15,7 +17,7 @@ namespace Core.InputSystem
         private Vector2 _axis = new();
         public void SetActivate(bool activate) => _isActive = activate;
 
-        public void Update()
+        public void Tick()
         {
             if (!_isActive) return;
 
@@ -26,8 +28,7 @@ namespace Core.InputSystem
             _axis.x = Input.GetAxisRaw("Horizontal");
             _axis.y = Input.GetAxisRaw("Vertical");
 
-            if (_axis.x != 0 || _axis.y != 0)
-                OnAxis?.Invoke(_axis);
+            OnAxis?.Invoke(_axis);
         }
     }
 }

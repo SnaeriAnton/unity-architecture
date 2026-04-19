@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Object = UnityEngine.Object;
+using VContainer;
+using VContainer.Unity; 
 
 namespace Core.Pool
 {
@@ -10,11 +11,13 @@ namespace Core.Pool
         private readonly Transform _root;
         private readonly Stack<T> _stack = new();
         private readonly List<T> _list = new();
+        private readonly IObjectResolver _resolver;
 
-        public ObjectPool(T prefab, Transform root)
+        public ObjectPool(T prefab, Transform root, IObjectResolver resolver)
         {
             _prefab = prefab;
             _root = root;
+            _resolver = resolver;
         }
 
         public T Spawn(int poolID,  Vector3 position, Quaternion quaternion)
@@ -57,7 +60,7 @@ namespace Core.Pool
 
         private T CreateNew()
         {
-            T obj = Object.Instantiate(_prefab, _root);
+            T obj = _resolver.Instantiate(_prefab, _root);
             return obj;
         }
     }

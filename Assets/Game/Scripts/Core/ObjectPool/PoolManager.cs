@@ -1,15 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 using ExtensionSystems;
 
 namespace Core.Pool
 {
-    public sealed class PoolManager
+    public sealed class PoolManager : IPoolService
     {
         private readonly Dictionary<int, IResettablePool> _pools = new();
+        private readonly IObjectResolver _resolver;
 
         private Transform _root = new GameObject("[Pool]").transform;
 
+        public PoolManager(IObjectResolver resolver) => _resolver = resolver;
+        
         public void Reset() => _pools.Values.ForEach(p => p.Reset());
 
         public T Spawn<T>(T prefab, Vector3 pos, Quaternion qua) where T : Component, IPoolable
@@ -27,7 +31,7 @@ namespace Core.Pool
             if (_pools.TryGetValue(prefab.GetInstanceID(), out IResettablePool existing))
                 return (ObjectPool<T>)existing;
 
-            ObjectPool<T> pool = new(prefab, _root);
+            ObjectPool<T> pool = new(prefab, _root, _resolver);
             _pools[prefab.GetInstanceID()] = pool;
             return pool;
         }

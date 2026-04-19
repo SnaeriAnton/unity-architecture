@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 
 namespace Game
 {
@@ -14,6 +16,11 @@ namespace Game
         [SerializeField] private Sword _swordTemplate;
         [SerializeField] private float _radius = 2f;
 
+        private IObjectResolver _resolver;
+        
+        [Inject]
+        public void Construct(IObjectResolver resolver) => _resolver = resolver;
+        
         public override void SetStats(WeaponStats stats)
         {
             base.SetStats(stats);
@@ -21,7 +28,7 @@ namespace Game
             LayoutChildren();
         }
 
-        public override void Apply() => transform.Rotate(0f, 0f, -90f * _stats.RoundSpeed * Time.deltaTime, Space.Self);
+        public override void Tick(float dt) => transform.Rotate(0f, 0f, -90f * _stats.RoundSpeed * dt, Space.Self);
 
         public override void Reset()
         {
@@ -73,7 +80,7 @@ namespace Game
         private Sword GetSword()
         {
             if (!_swordsQueue.TryDequeue(out Sword sword))
-                sword = Instantiate(_swordTemplate, transform);
+                sword = _resolver.Instantiate(_swordTemplate, transform);
 
             sword.gameObject.SetActive(true);
             _swords.Add(sword);

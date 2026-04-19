@@ -1,15 +1,22 @@
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 
 namespace Game
 {
     public class HealthPanel : MonoBehaviour
     {
-        [SerializeField] private HealthView _healthViewTemplate;
 
         private readonly Queue<HealthView> _healthQueue = new();
         private readonly List<HealthView> _healthList = new();
-
+        
+        [SerializeField] private HealthView _healthViewTemplate;
+        
+        private IObjectResolver _resolver;
+        
+        public void Construct(IObjectResolver resolver) => _resolver = resolver;
+        
         public void UpdateHealth(int health)
         {
             for (int i = _healthList.Count; i < health; i++)
@@ -39,7 +46,7 @@ namespace Game
         private HealthView GetHealth()
         {
             if (!_healthQueue.TryPeek(out HealthView view))
-                view = Instantiate(_healthViewTemplate, transform);
+                view = _resolver.Instantiate(_healthViewTemplate, transform);
             
             view.gameObject.SetActive(true);
             _healthList.Add(view);
