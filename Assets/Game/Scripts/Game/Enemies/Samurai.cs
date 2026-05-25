@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Core.Pool;
 
@@ -6,25 +5,23 @@ namespace Game
 {
     public class Samurai : Enemy<SamuraiStats>
     {
-        private void Update()
+        public override void Construct(Transform playerTransform, PoolManager poolManager, GameApi gameApi)
         {
-            if (_player.IsDead) return;
-            transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, _stats.Stats.Speed * Time.deltaTime);
+            base.Construct(playerTransform, poolManager, gameApi);
+            Health = _stats.Stats.Health;
+            Speed = _stats.Stats.Speed;
+            Damage = _stats.Stats.Damage;
+            AttackCooldown = _stats.Stats.AttacksPerSecond;
         }
 
-        public override void Construct(Player player, Action<EnemyBase> obDiedCallBack, PoolManager poolManager)
-        {
-            base.Construct(player, obDiedCallBack, poolManager);
-            _health = _stats.Stats.Health;
-        }
+        public override void SetupEcs(Entity entity, GameApi gameApi) => gameApi.AddEnemySuicideAttackTag(entity);
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent<Player>(out _))
-            {
-                _player.TakeDamage(_stats.Stats.Damage);
-                Die();
-            }
+            if (!other.TryGetComponent<PlayerHitbox>(out _)) return;
+
+            if (_link.IsRegistered)
+                GameApi.RequestEnemyAttack(_link.Entity);
         }
     }
 }

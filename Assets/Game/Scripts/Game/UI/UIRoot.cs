@@ -1,5 +1,5 @@
-using Core.UI;
 using UnityEngine;
+using Core.UI;
 
 namespace Game
 {
@@ -10,12 +10,12 @@ namespace Game
         [SerializeField] private UpgradeWindow _upgradeWindow;
         [SerializeField] private MenuScreen _menuScreen;
         
-        public void Construct(ProgressionSystem progression, UpgradeSystem upgradeStates, Wallet wallet, GameManager gameManager, Player player)
+        public void Construct(ProgressionSystem progression, UpgradeSystem upgradeStates, Wallet wallet, GameManager gameManager, PlayerHealthView playerHealthView, PlayerShieldView playerShieldView)
         {
             _loseScreen.Construct(gameManager);
             _menuScreen.Construct(gameManager);
             _upgradeWindow.Construct(progression, upgradeStates, wallet);
-            _hud.Construct(player, wallet, progression);
+            _hud.Construct(playerHealthView, playerShieldView, wallet, progression);
             UIManager.Register(_hud);
             UIManager.Register(_menuScreen);
             UIManager.Register(_loseScreen);

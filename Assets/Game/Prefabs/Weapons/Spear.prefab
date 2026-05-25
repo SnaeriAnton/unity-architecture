@@ -34,6 +34,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4165188471949163762
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -79,6 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -1420250052, guid: 62a8775e00da2ba4ea2f9fd0888a452f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -88,7 +90,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &5768170851574939809
 GameObject:
@@ -134,6 +135,7 @@ GameObject:
   - component: {fileID: 4568747299020907148}
   - component: {fileID: 4452484258390335098}
   - component: {fileID: 4118531294661348622}
+  - component: {fileID: 8998394387155435466}
   m_Layer: 0
   m_Name: Spear
   m_TagString: Untagged
@@ -215,9 +217,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d0126b2777888941833a51507cda7e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: My::My.Spear
-  _liveTime: 15
-  _speed: 1
-  _strength: 3
+  _projectileEcsLink: {fileID: 8998394387155435466}
+--- !u!114 &8998394387155435466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7116173187125107390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c522f6f19fda15c47914dae5146d1b3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.ProjectileEcsLink
 --- !u!1 &7652196342896255976
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,6 +264,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3552184479270670740
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -297,6 +310,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 4
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -499809863, guid: 62a8775e00da2ba4ea2f9fd0888a452f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -306,5 +320,4 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0

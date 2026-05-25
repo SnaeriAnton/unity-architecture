@@ -6,36 +6,38 @@ namespace Game
 {
     public abstract class EnemyBase : MonoBehaviour, IPoolable
     {
+        [SerializeField] protected EnemyEcsLink _link;
+
+        protected GameApi GameApi;
         protected PoolManager _poolManager;
-        protected Player _player;
-        protected float _health;
+        protected Transform _playerTransform;
         
         private Action _onDespawned;
-        
-        public int PoolID { get; private set; }
-        
-        private Action<EnemyBase> _obDiedCallBack;
 
-        public virtual void Construct(Player player, Action<EnemyBase> obDiedCallBack, PoolManager poolManager)
+        public float Health { get; protected set; }
+        public int Damage { get; protected set; } = 0;
+        public float AttackCooldown { get; protected set; } = 0;
+        public float Speed { get; protected set; } = 0;
+        public int PoolID { get; private set; }
+
+        public virtual void Construct(Transform playerTransform, PoolManager poolManager, GameApi gameApi)
         {
-            _player = player;
-            _obDiedCallBack = obDiedCallBack;
+            _playerTransform = playerTransform;
             _poolManager = poolManager;
+            GameApi = gameApi;
         }
 
+        public virtual void SetupEcs(Entity entity, GameApi gameApi) { }
+        
         public void TakeDamage(float damage)
         {
-            _health -= damage;
+            EnemyEcsLink link = GetComponent<EnemyEcsLink>();
 
-            if (_health <= 0)
-            {
-                _obDiedCallBack.Invoke(this);
-                Die();
-            }
+            if (!link.IsRegistered) return;
+
+            GameApi.RequestEnemyDamage(link.Entity, damage);
         }
-
-        protected void Die() => gameObject.SetActive(false);
-
+        
         void IPoolable.OnDespawned() => gameObject.SetActive(false);
 
         void IPoolable.OnSpawned(int poolID, Action onDespawned)

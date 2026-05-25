@@ -7,9 +7,14 @@ namespace Game
     {
         protected PoolManager _poolManager;
         protected WeaponStats _stats;
+        protected GameApi _gameApi;
 
-        public virtual void Construct(PoolManager poolManager) => _poolManager = poolManager;
-        public virtual void Apply() { }
+        public virtual void Construct(PoolManager poolManager, GameApi gameApi)
+        {
+            _gameApi = gameApi;
+            _poolManager = poolManager;
+        }
+
         public virtual void UpdateValues() { }
 
         public virtual void SetStats(WeaponStats stats)

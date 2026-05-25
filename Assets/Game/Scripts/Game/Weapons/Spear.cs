@@ -6,42 +6,43 @@ namespace Game
 {
     public class Spear : MonoBehaviour, IPoolable
     {
+        [SerializeField] private ProjectileEcsLink _projectileEcsLink;
+        
         private Action _onDespawned;
-        private WeaponStats _stats;
-        private Vector3 _direction;
-        private float _liveTime;
-        private int _currentStrength;
+        private GameApi _gameApi;
 
         public int PoolID { get; private set; }
 
-        public void Init(WeaponStats stats, Vector3 direction)
+        public void Init(GameApi gameApi, WeaponStats stats, Vector2 direction)
         {
-            _stats = stats;
-            _direction = direction;
-            _currentStrength = _stats.Strength;
-            _liveTime = _stats.LifeTime;
-        }
+            _gameApi = gameApi;
 
-        private void Update()
-        {
-            transform.position = Vector3.MoveTowards(transform.position, transform.position + _direction, _stats.FlightSpeed * Time.deltaTime);
+            Entity entity = _gameApi.RegisterProjectile(
+                transform,
+                _projectileEcsLink,
+                _onDespawned,
+                transform.position,
+                direction,
+                transform.rotation,
+                stats.FlightSpeed,
+                stats.LifeTime,
+                stats.Damage);
 
-            _liveTime -= Time.deltaTime;
-
-            if (_liveTime <= 0) _onDespawned.Invoke();
+            _projectileEcsLink.Bind(entity);
         }
 
         void IPoolable.OnDespawned() => gameObject.SetActive(false);
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent(out EnemyBase enemy))
-            {
-                enemy.TakeDamage(_stats.Damage);
-                _currentStrength--;
+            if (!other.TryGetComponent(out EnemyEcsLink enemyLink)) return;
+            if (!enemyLink.IsRegistered) return;
 
-                if (_currentStrength == 0) _onDespawned.Invoke();
-            }
+            ProjectileEcsLink projectileLink = GetComponent<ProjectileEcsLink>();
+
+            if (!projectileLink.IsRegistered) return;
+
+            _gameApi.RequestProjectileHitEnemy(projectileLink.Entity, enemyLink.Entity);
         }
 
         void IPoolable.OnSpawned(int poolID, Action onDespawned)

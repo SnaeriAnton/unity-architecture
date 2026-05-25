@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: My::My.VikingStats
   <Stats>k__BackingField:
     Health: 2
-    Speed: 2.1
+    Speed: 0
     AttacksPerSecond: 0
     Damage: 1
   <AxeStats>k__BackingField:

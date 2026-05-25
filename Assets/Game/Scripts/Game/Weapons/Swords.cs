@@ -13,19 +13,40 @@ namespace Game
 
         [SerializeField] private Sword _swordTemplate;
         [SerializeField] private float _radius = 2f;
+        
+        private Entity _orbitWeaponEntity;
+        private bool _isOrbitRegistered;
 
         public override void SetStats(WeaponStats stats)
         {
             base.SetStats(stats);
+
+            float degreesPerSecond = -90f * _stats.RoundSpeed;
+
+            if (!_isOrbitRegistered)
+            {
+                _orbitWeaponEntity = _gameApi.RegisterOrbitWeapon(transform, degreesPerSecond);
+                _isOrbitRegistered = true;
+            }
+            else
+            {
+                _gameApi.RequestSetOrbitWeaponRotation(_orbitWeaponEntity, degreesPerSecond);
+            }
+
             AddSwords();
             LayoutChildren();
+
+            foreach (Sword sword in _swords)
+                sword.Init(_gameApi, _stats.Damage);
         }
-
-        public override void Apply() => transform.Rotate(0f, 0f, -90f * _stats.RoundSpeed * Time.deltaTime, Space.Self);
-
+        
         public override void Reset()
         {
             base.Reset();
+
+            _orbitWeaponEntity = default;
+            _isOrbitRegistered = false;
+
             Clear();
         }
 
@@ -33,7 +54,7 @@ namespace Game
         {
             for (int i = _swords.Count; i < _stats.Count; i++) GetSword();
             
-            _swords.ForEach(s => s.SetDamage(_stats.Damage));
+            _swords.ForEach(s => s.Init(_gameApi, _stats.Damage));
         }
 
         private void LayoutChildren()
@@ -63,6 +84,7 @@ namespace Game
         {
             foreach (Sword sword in _swords)
             {
+                sword.ResetEcsLink();
                 sword.gameObject.SetActive(false);
                 _swordsQueue.Enqueue(sword);
             }

@@ -11,12 +11,14 @@ namespace Game
 
         private ProgressionSystem _progressionSystem;
         private Wallet _wallet;
-        private Player _player;
+        private PlayerHealthView _playerHealthView;
+        private PlayerShieldView _playerShieldBridge;
 
-        public void Construct(Player player, Wallet wallet, ProgressionSystem progressionSystem)
+        public void Construct(PlayerHealthView playerHealthView, PlayerShieldView playerShieldView, Wallet wallet, ProgressionSystem progressionSystem)
         {
             _progressionSystem = progressionSystem;
-            _player = player;
+            _playerShieldBridge = playerShieldView;
+            _playerHealthView = playerHealthView;
             _wallet = wallet;
         }
 
@@ -31,10 +33,10 @@ namespace Game
         {
             if (!gameObject.activeSelf) return;
             _progressBarView.UpdateProgressbar(_progressionSystem.CurrentExperience, _progressionSystem.MaxUpgrade);
-            _healthPanel.ChangeHealth(_player.CurrentHealth);
+            _healthPanel.ChangeHealth(_playerHealthView.CurrentHealth);
             _coinsView.ShowCoinsText(_wallet.Coins);
 
-            if (_player.Shield) _shieldView.UpdateCoolDown(_player.Shield.CurrentCoolDownCount, _player.Shield.CoolDown);
+            if (_playerShieldBridge.IsActive) _shieldView.UpdateCoolDown(_playerShieldBridge.Current, _playerShieldBridge.Cooldown);
         }
 
         public override void Reset()
@@ -46,7 +48,7 @@ namespace Game
 
         private void UpdateHealth()
         {
-            _healthPanel.UpdateHealth(_player.MaxHealth);
+            _healthPanel.UpdateHealth(_playerHealthView.MaxHealth);
             _shieldView.transform.SetAsLastSibling();
         }
     }
