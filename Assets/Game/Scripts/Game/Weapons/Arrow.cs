@@ -37,12 +37,9 @@ namespace Game
         {
             if (!other.TryGetComponent(out EnemyEcsLink enemyLink)) return;
             if (!enemyLink.IsRegistered) return;
+            if (!_projectileEcsLink.IsRegistered) return;
 
-            ProjectileEcsLink projectileLink = GetComponent<ProjectileEcsLink>();
-
-            if (!projectileLink.IsRegistered) return;
-
-            _gameApi.RequestProjectileHitEnemy(projectileLink.Entity, enemyLink.Entity);
+            _gameApi.RequestProjectileHitEnemy(_projectileEcsLink.Entity, enemyLink.Entity);
         }
         
         void IPoolable.OnSpawned(int poolID, Action onDespawned)
