@@ -21,7 +21,7 @@ namespace Game
             if (!other.TryGetComponent<PlayerHitbox>(out _)) return;
 
             if (_link.IsRegistered)
-                GameApi.RequestEnemyAttack(_link.Entity);
+                _gameApi.RequestEnemyAttack(_link.Entity);
         }
     }
 }

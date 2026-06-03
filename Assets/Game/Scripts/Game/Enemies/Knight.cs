@@ -19,7 +19,7 @@ namespace Game
             if (!other.TryGetComponent<PlayerHitbox>(out _)) return;
             
             if (_link.IsRegistered)
-                GameApi.SetEnemyPlayerInRange(_link.Entity, true);
+                _gameApi.SetEnemyPlayerInRange(_link.Entity, true);
         }
 
         private void OnTriggerExit2D(Collider2D other)
@@ -27,7 +27,7 @@ namespace Game
             if (!other.TryGetComponent<PlayerHitbox>(out _)) return;
             
             if (_link.IsRegistered)
-                GameApi.SetEnemyPlayerInRange(_link.Entity, false);
+                _gameApi.SetEnemyPlayerInRange(_link.Entity, false);
         }
     }
 }

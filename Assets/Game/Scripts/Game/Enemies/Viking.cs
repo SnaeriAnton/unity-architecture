@@ -21,7 +21,7 @@ namespace Game
             Vector2 direction = _playerTransform.position - transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             Axe axe = _poolManager.Spawn(_stats.AxeTemplate, transform.position, Quaternion.Euler(0f, 0f, angle));
-            axe.Init(GameApi, _stats.AxeStats, direction.normalized);
+            axe.Init(_gameApi, _stats.AxeStats, direction.normalized);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Game
     {
         [SerializeField] protected EnemyEcsLink _link;
 
-        protected GameApi GameApi;
+        protected GameApi _gameApi;
         protected PoolManager _poolManager;
         protected Transform _playerTransform;
         
@@ -24,7 +24,7 @@ namespace Game
         {
             _playerTransform = playerTransform;
             _poolManager = poolManager;
-            GameApi = gameApi;
+            _gameApi = gameApi;
         }
 
         public virtual void SetupEcs(Entity entity, GameApi gameApi) { }
@@ -35,7 +35,7 @@ namespace Game
 
             if (!link.IsRegistered) return;
 
-            GameApi.RequestEnemyDamage(link.Entity, damage);
+            _gameApi.RequestEnemyDamage(link.Entity, damage);
         }
         
         void IPoolable.OnDespawned() => gameObject.SetActive(false);
