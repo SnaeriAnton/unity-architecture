@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6425639208506341604}
   - component: {fileID: 6200910820260448052}
   - component: {fileID: 4589284157545309738}
+  - component: {fileID: 4139946716382873163}
   m_Layer: 0
   m_Name: Axe
   m_TagString: Untagged
@@ -82,9 +83,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3965d44c95da484b8cd3b94039d9282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: My::My.Axe
-  _liveTime: 6
-  _speed: 2
-  _angularSpeedDeg: 720
+  _axeLink: {fileID: 4139946716382873163}
+--- !u!114 &4139946716382873163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2767379212659611571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 130a03e3f32dde4499b106e293b0f690, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.ECS.AxeEcsLink
 --- !u!1 &5514021582468366334
 GameObject:
   m_ObjectHideFlags: 0
@@ -119,6 +130,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6607403482000642098
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -164,6 +176,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -230244978, guid: 2a862facc91f5bd40bfdcb196b202f8c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -173,7 +186,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &6290385524449652411
 GameObject:
@@ -209,6 +221,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8616067259026862778
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -254,6 +267,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 4
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -1493683741, guid: 62a8775e00da2ba4ea2f9fd0888a452f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -263,7 +277,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &7567413098088815021
 GameObject:

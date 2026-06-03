@@ -67,6 +67,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4735551560927883222
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -112,6 +113,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 4
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -1038331472, guid: 2a862facc91f5bd40bfdcb196b202f8c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -121,7 +123,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1697039427364001710
 GameObject:
@@ -134,6 +135,7 @@ GameObject:
   - component: {fileID: 8803829308543264510}
   - component: {fileID: 3291321440873209652}
   - component: {fileID: 6331049295089776167}
+  - component: {fileID: 1088449653007715796}
   m_Layer: 0
   m_Name: Arrow
   m_TagString: Untagged
@@ -215,8 +217,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d79e5f90ce58594e857e661a78b4255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: My::My.Arrow
-  _liveTime: 10
-  _speed: 1
+  _projectileEcsLink: {fileID: 1088449653007715796}
+--- !u!114 &1088449653007715796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697039427364001710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c522f6f19fda15c47914dae5146d1b3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.ArrowEcsLink
 --- !u!1 &6736187527007174646
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,6 +264,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7246740704582666605
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -296,6 +310,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -1885559243, guid: 2a862facc91f5bd40bfdcb196b202f8c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -305,5 +320,4 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0

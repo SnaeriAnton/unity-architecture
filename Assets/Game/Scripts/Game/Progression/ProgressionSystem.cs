@@ -1,4 +1,3 @@
-using Core.UI;
 using UnityEngine;
 
 namespace Game
@@ -6,19 +5,33 @@ namespace Game
     public class ProgressionSystem
     {
         private readonly UpgradeSystem _upgradeSystem;
-        private readonly EnemySpawnerController _spawnerController;
         private readonly Wallet _wallet;
         private readonly ProgressConfig _config;
+        private readonly EnemySpawnerApi _enemySpawnerApi;
+        private readonly GameUiBridge _gameUiBridge;
+        private readonly GameTimeService _gameTimeService;
+        private readonly HudEcsApi _hudEcsApi;
 
         private int _amountOfExperienceBeforeNextLevelUp;
         private int _currentPlayerLevel;
         
-        public ProgressionSystem(UpgradeSystem upgradeSystem, EnemySpawnerController spawnerController, Wallet wallet, ProgressConfig config)
+        public ProgressionSystem(
+            UpgradeSystem upgradeSystem, 
+            Wallet wallet, 
+            ProgressConfig config, 
+            EnemySpawnerApi enemySpawnerApi, 
+            GameUiBridge gameUiBridge, 
+            HudEcsApi hudEcsApi,
+            GameTimeService gameTimeService
+            )
         {
             _upgradeSystem = upgradeSystem;
-            _spawnerController = spawnerController;
             _wallet = wallet;
             _config = config;
+            _enemySpawnerApi = enemySpawnerApi;
+            _gameUiBridge = gameUiBridge;
+            _gameTimeService = gameTimeService;
+            _hudEcsApi = hudEcsApi;
             _amountOfExperienceBeforeNextLevelUp = _config.ExperienceBeforeLevelUp;
         }
 
@@ -30,15 +43,15 @@ namespace Game
             if (_upgradeSystem.IsMaxUpgrades) return;
 
             CurrentExperience++;
-            UIManager.GetScreen<HUD>().Refresh();
+            _hudEcsApi.RequestRefresh();
 
             if (CurrentExperience >= _amountOfExperienceBeforeNextLevelUp)
             {
-                if (_currentPlayerLevel % _config.LevelUpStageStep == 0) _spawnerController.LevelUp();
+                if (_currentPlayerLevel % _config.LevelUpStageStep == 0) _enemySpawnerApi.RequestNextStage();
                 _wallet.AddCrystal();
                 _currentPlayerLevel++;
-                Time.timeScale = 0;
-                UIManager.ShowWindow<UpgradeWindow>();
+                _gameTimeService.Pause();
+                _gameUiBridge.ShowUpgradeWindow();
             }
         }
 
@@ -51,11 +64,11 @@ namespace Game
         
         public void UpgradeStats()
         {
-            Time.timeScale = 1;
+            _gameTimeService.Resume();
             if (_upgradeSystem.IsMaxUpgrades) return;
             CurrentExperience = 0;
             _amountOfExperienceBeforeNextLevelUp = (int)(_amountOfExperienceBeforeNextLevelUp * _config.ExperienceMultiplier);
-            UIManager.GetScreen<HUD>().Refresh();
+            _hudEcsApi.RequestRefresh();
         }
     }
 }

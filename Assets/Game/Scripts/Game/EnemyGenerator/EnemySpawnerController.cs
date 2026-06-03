@@ -1,31 +1,29 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
-using Contracts;
 
 namespace Game
 {
-    public class EnemySpawnerController : ITickable
+    public class EnemySpawnerController
     {
         private readonly GeneratorData _data;
-        private readonly Player _player;
+        private readonly Transform _playerTransform;
         private readonly Border _border;
         private readonly Factory _factory;
-        private readonly EnemyDeathHandler _handler;
 
         private GeneratorStage _currentStage;
         private bool _isSpawning;
         private int _currentStageIndex;
-        private float _spawnTimer;
 
-        public EnemySpawnerController(Player player, GeneratorData data, EnemyDeathHandler handler, Factory factory, Border border)
+        public EnemySpawnerController(Transform playerTransform, GeneratorData data, Factory factory, Border border)
         {
-            _player = player;
+            _playerTransform = playerTransform;
             _data = data;
             _factory = factory;
-            _handler = handler;
             _border = border;
-            _spawnTimer = 0f;
         }
+
+        public bool CanSpawn => _isSpawning && !_currentStage.Equals(default);
+        public float CurrentSpawnInterval => _currentStage.SpawnInterval;
 
         public void Start()
         {
@@ -34,22 +32,17 @@ namespace Game
         }
 
         public void Stop() => _isSpawning = false;
-
-        public void Tick()
+        
+        public void Spawn()
         {
-            if (!_isSpawning) return;
-            _spawnTimer += Time.deltaTime;
+            if (_currentStage.Equals(default)) return;
 
-            if (_spawnTimer < _currentStage.SpawnInterval) return;
-
-            _spawnTimer = 0f;
-            _factory.SpawnEnemy(_currentStage.Enemies[Random.Range(0, _currentStage.Enemies.Count)], _handler.Handle, _border.PickPoint(_player.transform.position, _data.RadiusPlayer));
+            _factory.SpawnEnemy(_currentStage.Enemies[Random.Range(0, _currentStage.Enemies.Count)], _border.PickPoint(_playerTransform.position, _data.RadiusPlayer));
         }
 
         public void Reset()
         {
             _currentStageIndex = 0;
-            _spawnTimer = 0f;
             _currentStage = _data.Stages[_currentStageIndex];
         }
 

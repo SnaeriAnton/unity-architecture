@@ -7,9 +7,20 @@ namespace Game
     {
         protected PoolManager _poolManager;
         protected WeaponStats _stats;
+        protected ProjectileApi ProjectileApi;
+        protected ProjectileWeaponApi ProjectileWeaponApi;
+        protected WeaponHitboxApi WeaponHitboxApi;
+        protected OrbitWeaponApi OrbitWeaponApi;
 
-        public virtual void Construct(PoolManager poolManager) => _poolManager = poolManager;
-        public virtual void Apply() { }
+        public virtual void Construct(PoolManager poolManager, ProjectileApi projectileApi, ProjectileWeaponApi projectileWeaponApi, WeaponHitboxApi weaponHitboxApi, OrbitWeaponApi orbitWeaponApi)
+        {
+            _poolManager = poolManager;
+            ProjectileApi = projectileApi;
+            ProjectileWeaponApi = projectileWeaponApi;
+            WeaponHitboxApi = weaponHitboxApi;
+            OrbitWeaponApi = orbitWeaponApi;
+        }
+
         public virtual void UpdateValues() { }
 
         public virtual void SetStats(WeaponStats stats)

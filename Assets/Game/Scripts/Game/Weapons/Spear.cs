@@ -6,42 +6,39 @@ namespace Game
 {
     public class Spear : MonoBehaviour, IPoolable
     {
+        [SerializeField] private ProjectileEcsLink _projectileEcsLink;
+        
         private Action _onDespawned;
-        private WeaponStats _stats;
-        private Vector3 _direction;
-        private float _liveTime;
-        private int _currentStrength;
-
+        private ProjectileApi _projectileApi;
         public int PoolID { get; private set; }
 
-        public void Init(WeaponStats stats, Vector3 direction)
+        public void Init(ProjectileApi projectileApi, WeaponStats stats, Vector2 direction)
         {
-            _stats = stats;
-            _direction = direction;
-            _currentStrength = _stats.Strength;
-            _liveTime = _stats.LifeTime;
-        }
+            _projectileApi = projectileApi;
 
-        private void Update()
-        {
-            transform.position = Vector3.MoveTowards(transform.position, transform.position + _direction, _stats.FlightSpeed * Time.deltaTime);
+            int entity = _projectileApi.RegisterProjectile(
+                transform,
+                _projectileEcsLink,
+                _onDespawned,
+                transform.position,
+                direction,
+                transform.rotation,
+                stats.FlightSpeed,
+                stats.LifeTime,
+                stats.Damage);
 
-            _liveTime -= Time.deltaTime;
-
-            if (_liveTime <= 0) _onDespawned.Invoke();
+            _projectileEcsLink.Bind(entity);
         }
 
         void IPoolable.OnDespawned() => gameObject.SetActive(false);
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent(out EnemyBase enemy))
-            {
-                enemy.TakeDamage(_stats.Damage);
-                _currentStrength--;
+            if (!other.TryGetComponent(out EnemyEcsLink enemyLink)) return;
+            if (!enemyLink.IsRegistered) return;
+            if (!_projectileEcsLink.IsRegistered) return;
 
-                if (_currentStrength == 0) _onDespawned.Invoke();
-            }
+           _projectileApi.RequestProjectileHitEnemy(_projectileEcsLink.Entity, enemyLink.Entity);
         }
 
         void IPoolable.OnSpawned(int poolID, Action onDespawned)

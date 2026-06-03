@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Core.Pool;
 
@@ -6,47 +5,29 @@ namespace Game
 {
     public class Knight : Enemy<KnightStats>
     {
-        private bool _playerInRange;
-        private float _lastTimeSpawn;
-
-        private void Update()
+        public override void Construct(Transform playerTransform, PoolManager poolManager, AxeApi axeApi, LeoEnemyApi leoEnemyApi)
         {
-            if (_player.IsDead) return;
-
-            if (_playerInRange)
-            {
-                float interval = Time.time - _lastTimeSpawn;
-
-                if (interval >= _stats.Stats.AttacksPerSecond)
-                {
-                    _lastTimeSpawn = Time.time;
-                    _player.TakeDamage(_stats.Stats.Damage);
-                }
-            }
-
-            transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, _stats.Stats.Speed * Time.deltaTime);
-        }
-        
-        public override void Construct(Player player, Action<EnemyBase> obDiedCallBack, PoolManager poolManager)
-        {
-            base.Construct(player, obDiedCallBack, poolManager);
-            _health = _stats.Stats.Health;
+            base.Construct(playerTransform, poolManager, axeApi, leoEnemyApi);
+            Health = _stats.Stats.Health;
+            Speed = _stats.Stats.Speed;
+            Damage = _stats.Stats.Damage;
+            AttackCooldown = _stats.Stats.AttacksPerSecond;
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent<Player>(out _))
-            {
-                _lastTimeSpawn = Time.time;
-                _playerInRange = true;
-                _player.TakeDamage(_stats.Stats.Damage);
-            }
+            if (!other.TryGetComponent<PlayerHitbox>(out _)) return;
+            
+            if (_link.IsRegistered)
+                _leoEnemyApi.SetEnemyPlayerInRange(_link.Entity, true);
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            if (other.TryGetComponent<Player>(out _) && _playerInRange)
-                _playerInRange = false;
+            if (!other.TryGetComponent<PlayerHitbox>(out _)) return;
+            
+            if (_link.IsRegistered)
+                _leoEnemyApi.SetEnemyPlayerInRange(_link.Entity, false);
         }
     }
 }
