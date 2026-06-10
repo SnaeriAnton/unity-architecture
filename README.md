@@ -9,6 +9,8 @@ The project was developed using different architectural approaches and technolog
 * Layered
 * Monolith
 * ServiceLocator
+* ECS
+* Leo-ECS
 
 ### Technologies:
 * Zenject
